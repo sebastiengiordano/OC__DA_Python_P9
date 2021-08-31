@@ -1,0 +1,11 @@
+<form action="/user-name/" method="get">
+    <label for="user_name">Nom d'utilisateur: </label>
+    <input id="user_name" type="text" name="user_name" value="{{ current_name }}">
+    <input type="submit" value="S'inscrire'">
+</form>
+
+<form action="{% url 'reviews:connection' question.id %}" method="post">
+    <label for="user_name">Nom d'utilisateur: </label>
+    <input id="user_name" type="text" name="user_name" value="{{ current_name }}" required>
+    <input type="submit" value="Se connecter">
+</form>
