@@ -25,10 +25,7 @@ def get_connection_data(request):
             # ...
             # redirect to a new URL:
             return HttpResponseRedirect(
-                reverse(
-                    'reviews:feed',
-                    args=(request.user, request.password))
-                )
+                reverse('reviews:feed'))
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -48,9 +45,7 @@ def get_registration_data(request):
             # ...
             # redirect to a new URL:
             return HttpResponseRedirect(
-                reverse(
-                    'reviews',
-                    args=(request.user, request.password))
+                reverse('reviews:registration')
                 )
 
     # if a GET (or any other method) we'll create a blank form

@@ -3,17 +3,35 @@
 
 {% block content %}
 
-    <form action="{% url 'reviews:registration' %}" method="post">
-        <label for="user_name">Inscrivez-vous maintenant</label>
-        <input type="submit" value="S'inscrire'">
-    </form>
+    <div id="home_page">
+        <div class="home_page_format">
+            <form action="{% url 'reviews:registration' %}" method="post">
+                <p>
+                    <label for="user_name">Inscrivez-vous maintenant</label>
+                </p>
+                <p>
+                    <input type="submit" value="S'inscrire">
+                </p>
+            </form>
+        </div>
 
-    <form action="{% url 'reviews:feed' user.username %}" method="post">
-        {% csrf_token %}
-        <label for="user_name">Connectez-vous</label>
-        <input id="user_name" type="text" name="user_name" placeholder="Nom d'utilisateur" required>
-        <input id="password" type="text" name="password" placeholder="Mot de passe" required>
-        <input type="submit" value="Se connecter">
-    </form>
+        <div class="home_page_format">
+            <form action="{% url 'reviews:feed' %}" method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="user_name">Connectez-vous</label>
+                </p>
+                {{ form }}
+                {% comment %} <p>
+                    <input id="user_name" type="text" name="user_name" placeholder="Nom d'utilisateur" required>                </p>
+                <p>
+                    <input id="password" type="password" name="password" placeholder="Mot de passe" required>
+                </p> {% endcomment %}
+                <p>
+                    <input type="submit" value="Se connecter">
+                </p>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

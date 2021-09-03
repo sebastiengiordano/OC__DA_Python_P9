@@ -1,0 +1,33 @@
+{% extends 'reviews/base.html' %}
+
+
+{% block content %}
+
+    <div id="home_page">
+        <div class="home_page_format">
+            <form action="{% url 'reviews:feed' %}" method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="user_name">Inscrivez-vous</label>
+                </p>
+                <p>
+                    <input id="user_name" type="text" name="user_name" placeholder="Nom d'utilisateur" required>                </p>
+                <p>
+                    <input id="password" type="password" name="password" placeholder="Mot de passe" required>
+                </p>
+                <p>
+                    <input id="password" type="password" name="password_confirmation" placeholder="Confirmer mot de passe" required>
+                </p>
+                <div class="in_line">
+                    <p>
+                        <input type="submit" value="Retourner">
+                    </p>
+                    <p>
+                        <input type="submit" value="S'inscrire'">
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
