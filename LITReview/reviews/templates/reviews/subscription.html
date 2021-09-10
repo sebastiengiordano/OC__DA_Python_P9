@@ -1,0 +1,48 @@
+{% extends 'reviews/base_with_navbar.html' %}
+
+{% block content %}
+
+    <h1>
+        <label>Suivre d'autres utilisateurs</label>
+    </h1>
+
+    {% if subscribtions.count > 0 %}
+        <h1>
+            <label>Abonnements</label>
+        </h1>
+        <table>
+            <tr>
+                <th>Pseudo</th>
+                <th>Supprimer</th>
+            </tr>
+            {% for subscribtion in subscribtions %}
+                <tr>
+                    <td>subscribtion.username</td>
+                    <td>$100</td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button">
+                            <a href="{% url 'reviews:home_page' %}">Se désabonner</a>
+                        </button>subscribtion.username
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="information">
+            <p>Vous ne suivez personne.</p>
+        </div>
+    {% endif %}
+
+    {% if subscribers.count > 0 %}
+        {% for subscriber in subscribers %}
+
+        {% endfor %}
+    {% else %}
+        <div class="information">
+            <p>Personne ne vous suit.</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

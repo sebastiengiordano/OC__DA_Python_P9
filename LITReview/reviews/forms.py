@@ -13,7 +13,7 @@ class ConnectionForm(forms.Form):
     password = forms.CharField(
         label="",
         min_length=8, max_length=20,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={'placeholder': 'Mot de passe'})
         )
 
@@ -28,12 +28,12 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(
         label="",
         min_length=8, max_length=20,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={'placeholder': 'Mot de passe'})
         )
     password_confirmation = forms.CharField(
         label="",
         min_length=8, max_length=20,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={'placeholder': 'Confirmer mot de passe'})
         )

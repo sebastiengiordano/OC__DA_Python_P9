@@ -152,15 +152,71 @@ nav a:hover {
     text-align: center;
     align-items: center;
     flex-direction: column;
-    width: 25%;
+    min-width: 350px;
+    max-width: 400px;
+}
+
+
+/*********************/
+/* Registration Page */
+/*********************/
+
+#registration_page{
+    display: flex;
+    position: relative;
+    font-size: 2.3em;
+    font-weight: bold;
+    justify-content: space-around;
+    top: 2em;
+}
+
+.registration_page_format {
+    display: block;
+    text-align: center;
+    max-width: 600px;
 }
 
 .in_line {
     display: inline-flex;
     justify-content: space-between;
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    position: relative;
+}
+
+
+/***********/
+/* Content */
+/***********/
+
+.information{
+    display: flex;
+    position: relative;
+    margin: 0 30%;
+    font-size: 2em;
+    font-weight: bold;
+    justify-content: space-around;
+    text-align: center;
+    top: 10em;
+}
+
+.h1{
+    display: flex;
+    position: relative;
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    top: 1em;
+}
+
+li::marker{
+    margin: 0;
+    font-weight: normal;
+    text-align: left;
+    font-size: small;
+}
+
+table, th, td {
+    border: 1px solid black;
 }
 
 
@@ -202,7 +258,7 @@ input[type=text], input[type=password] {
     color: chocolate;
 }
 
-input[type=button], input[type=submit], input[type=reset] {
+input[type=button], input[type=submit], input[type=reset], button[type=button] {
     background-color:bisque;
     border: 1px solid chocolate;
     padding: 10px 50px;
@@ -214,19 +270,11 @@ input[type=button], input[type=submit], input[type=reset] {
     font-weight: 900;
 }
 
-.closebtn {
-    position: absolute;
-    padding: 1em !important;
-    right: 0;
-    top: 0;
+button a{
     text-decoration: none;
-    float: right;
-    font-size: 20px;
-    font-weight: bold;
+    color: inherit;
 }
 
-.closebtn:hover {
-background-color:red;
-color:chocolate;
-box-shadow:0 8px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+.wrap_button{
+    margin: 10px;
 }

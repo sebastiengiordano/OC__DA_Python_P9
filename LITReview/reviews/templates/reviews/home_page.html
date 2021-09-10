@@ -5,9 +5,10 @@
 
     <div id="home_page">
         <div class="home_page_format">
-            <form action="{% url 'reviews:registration' %}" method="post">
+            <form action="{% url 'reviews:registration' %}" method="get">
+                {% csrf_token %}
                 <p>
-                    <label for="user_name">Inscrivez-vous maintenant</label>
+                    <label>Inscrivez-vous maintenant</label>
                 </p>
                 <p>
                     <input type="submit" value="S'inscrire">
@@ -16,17 +17,12 @@
         </div>
 
         <div class="home_page_format">
-            <form action="{% url 'reviews:feed' %}" method="post">
+            <form action="{% url 'reviews:home_page' %}" method="post">
                 {% csrf_token %}
                 <p>
-                    <label for="user_name">Connectez-vous</label>
+                    <label>Connectez-vous</label>
                 </p>
                 {{ form }}
-                {% comment %} <p>
-                    <input id="user_name" type="text" name="user_name" placeholder="Nom d'utilisateur" required>                </p>
-                <p>
-                    <input id="password" type="password" name="password" placeholder="Mot de passe" required>
-                </p> {% endcomment %}
                 <p>
                     <input type="submit" value="Se connecter">
                 </p>

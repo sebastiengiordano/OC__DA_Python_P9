@@ -5,8 +5,10 @@
     <!-- Navigation-->                
     <nav>
         <ul>
-            <li><a href="#">Accueil</a></li>
-            <li><a href="#">Catégories</a></li>
+            <li><a href="{% url 'reviews:feed' %}">Flux</a></li>
+            <li><a href="{% url 'reviews:posts' %}">Post</a></li>
+            <li><a href="{% url 'reviews:subscription' %}">Abonnements</a></li>
+            <li><a href="{% url 'reviews:home_page' %}">Se déconnecter</a></li>
         </ul>
     </nav>
 
