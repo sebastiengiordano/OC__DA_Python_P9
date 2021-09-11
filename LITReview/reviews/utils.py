@@ -16,3 +16,7 @@ def get_users_subscriptions(user: User):
 
 def get_users_subscribers(user: User):
     return user.followed_by.all()
+
+
+def get_users_by_name(username: str):
+    return User.objects.filter(username=username)

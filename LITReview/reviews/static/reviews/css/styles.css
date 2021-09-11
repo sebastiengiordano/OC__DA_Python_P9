@@ -54,9 +54,19 @@ body {
 
 h1 {
     display: flex;
-    font-size: 4em;
-    font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2em;
+    font-family: 'Dayrom', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     justify-content: center;
+    text-align: center;
+}
+
+h2 {
+    display: flex;
+    font-size: 1.5em;
+    font-family: 'Dayrom', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: center;
+    text-align: center;
+    margin-top: 50px;
 }
 
 
@@ -78,9 +88,11 @@ header {
 header h1 {
     align-items: center;
     margin: 0.5em 2em;
-    /* display: flex; */
+    font-size: 4em;
     position:relative;
-    /* flex:1 0 auto; */
+    font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: center;
+    text-align: center;
 }
 
 #logo {
@@ -217,6 +229,16 @@ li::marker{
 
 table, th, td {
     border: 1px solid black;
+}
+
+.subscribe_information{
+    display: flex;
+    position: relative;
+    margin: 0;
+    font-size: 2em;
+    font-weight: bold;
+    justify-content: space-around;
+    text-align: center;
 }
 
 

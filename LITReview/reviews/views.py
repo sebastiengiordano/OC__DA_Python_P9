@@ -1,3 +1,4 @@
+from ast import IsNot
 from itertools import chain
 from django.db import reset_queries
 from django.forms import PasswordInput
@@ -16,7 +17,8 @@ from .utils import (
     get_users_subscribers,
     get_users_subscriptions,
     get_users_viewable_reviews,
-    get_users_viewable_tickets
+    get_users_viewable_tickets,
+    get_users_by_name
 )
 
 
@@ -27,7 +29,7 @@ def get_connection_data(request):
         form = ConnectionForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            print(request.user.username)
+            print(request.POST['username'])
             print(form.cleaned_data)
             if request.user.is_authenticated:
                 login(request, request.user)
@@ -48,13 +50,8 @@ def get_registration_data(request):
         form = RegistrationForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            # return HttpResponseRedirect(
-            #     reverse('reviews:registration')
-            #     )
-            return redirect('reviews:feed')
+            if get_users_by_name(form.cleaned_data.username):
+                return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -103,6 +100,14 @@ def posts(request):
 
 @login_required
 def subscription(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        followed_user_to_removed = request.POST['submit']
+        user_Follows_object = UserFollows.objects.filter(id=followed_user_to_removed)
+        if user_Follows_object is not None:
+            user_Follows_object.delete()
+            return subscription(request)
+
     # returns queryset of subscribtions
     subscribtions = get_users_subscriptions(request.user)
 
