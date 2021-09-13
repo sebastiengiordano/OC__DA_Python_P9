@@ -41,12 +41,12 @@ class CreateReview(forms.Form):
     review_title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput()
+        widget=forms.TextInput(attrs={'class': 'review_title'})
         )
     description = forms.CharField(
         label="",
         min_length=8, max_length=20,
-        widget=forms.TextInput()
+        widget=forms.TextInput(attrs={'class': 'description'})
         )
 
 
@@ -54,28 +54,22 @@ class AskForReview(forms.Form):
     book_article_title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput()
+        widget=forms.TextInput(attrs={'class': 'book_article_title'})
         )
     description = forms.CharField(
         label="",
-        min_length=8, max_length=20,
-        widget=forms.TextInput()
-        )
-    password_confirmation = forms.CharField(
-        label="",
-        min_length=8, max_length=20,
-        widget=forms.TextInput(
-            attrs={'placeholder': 'Confirmer mot de passe'})
+        min_length=1, max_length=1000,
+        widget=forms.TextInput(attrs={'class': 'description'})
         )
     review_title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput()
+        widget=forms.TextInput(attrs={'class': 'review_title'})
         )
     rating = forms.ChoiceField(
-        label = "Note",
-        widget=forms.CheckboxInput,
-        choices=[x for x in range(6)]
+        label="Note",
+        widget=forms.CheckboxSelectMultiple(),
+        choices=[(str(x), str(x)) for x in range(6)]
         )
     commentary = forms.CharField(
         label="Commentaire",

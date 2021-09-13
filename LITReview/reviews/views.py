@@ -25,6 +25,9 @@ from .utils import (
 )
 
 
+#############
+# Home page #
+#############
 def get_connection_data(request):
     '''View used to manage user's log in.'''
     # if this is a POST request we need to process the form data
@@ -48,6 +51,9 @@ def get_connection_data(request):
     return render(request, 'reviews/home_page.html', {'form': form})
 
 
+#####################
+# Registration page #
+#####################
 def get_registration_data(request):
     '''View used to append new user.'''
     # if this is a POST request we need to process the form data
@@ -82,6 +88,9 @@ def get_registration_data(request):
     return render(request, 'reviews/registration.html', {'form': form})
 
 
+#############
+# Feed page #
+#############
 @login_required(login_url='reviews:home_page')
 def feed(request):
     '''View which manage the feed page.'''
@@ -140,6 +149,9 @@ def ask_for_review(request):
     return render(request, 'reviews/ask_for_review.html', {'form': form})
 
 
+##############
+# Posts page #
+##############
 @login_required(login_url='reviews:home_page')
 def posts(request):
     '''View which manage the posts page.'''
@@ -160,13 +172,18 @@ def posts(request):
     return render(request, 'reviews/posts.html', context={'posts': posts})
 
 
+#####################
+# Subscription page #
+#####################
 @login_required(login_url='reviews:home_page')
 def subscription(request):
-    '''View which manage the subscription page.'''
+    '''View which managed the subscription page.'''
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         followed_user_to_removed = request.POST['submit']
-        user_Follows_object = UserFollows.objects.filter(id=followed_user_to_removed)
+        user_Follows_object = UserFollows.objects.filter(
+            id=followed_user_to_removed
+            )
         if user_Follows_object is not None:
             user_Follows_object.delete()
             return subscription(request)
@@ -186,20 +203,23 @@ def subscription(request):
             })
 
 
+#################
+# Disconnection #
+#################
 def disconnect(request):
     '''Function used to log out the current user.'''
     logout(request)
     return redirect('reviews:home_page')
 
 
-class FeedView(generic.ListView):
-    model = [Review, Ticket]
-    template_name = 'reviews/feed.html'
-    context_object_name = 'latest_review_list'
+# class FeedView(generic.ListView):
+#     model = [Review, Ticket]
+#     template_name = 'reviews/feed.html'
+#     context_object_name = 'latest_review_list'
 
-    def get_queryset(self):
-        """Return the last five published reviews."""
-        return Review.objects.order_by('-pub_date')[:5]
+#     def get_queryset(self):
+#         """Return the last five published reviews."""
+#         return Review.objects.order_by('-pub_date')[:5]
 
 
 # class DetailView(generic.DetailView):

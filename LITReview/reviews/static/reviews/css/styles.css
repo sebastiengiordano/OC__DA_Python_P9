@@ -189,9 +189,9 @@ nav a:hover {
 }
 
 
-/*************/
-/* feed Page */
-/*************/
+/**************/
+/* feed Pages */
+/**************/
 
 #feed_page{
     display: flex;
@@ -205,6 +205,30 @@ nav a:hover {
 .feed_page_format {
     display: block;
     text-align: center;
+}
+
+#ask_for_review_page{
+    display: flex;
+    position: relative;
+    font-size: 2.3em;
+    font-weight: bold;
+    justify-content: space-around;
+    top: -1em;
+    text-align: center;
+}
+
+.feed_page_format {
+    display: block;
+    text-align: center;
+}
+
+#id_book_article_title{
+    color:red;
+}
+
+#id_rating{
+    display: inline;
+    size: 200px;
 }
 
 .in_line {
