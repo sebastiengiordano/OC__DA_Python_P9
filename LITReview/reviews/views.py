@@ -57,25 +57,19 @@ def get_registration_data(request):
             # If the username is not already used
             if not username_exists(username):
                 # Check if the password has been correctly set twice
-                if (password == form.cleaned_data['password_confirmation']):
+                if check_password_confirmation(form):
                     # This user could be append to DB.
                     user = User.objects.create_user(username, '', password)
                     # And we could log in it
                     login(request, user)
                     return redirect('reviews:feed')
-                else:
-                    # The password confirmation doesn't correspond to the
-                    # password, we need to informed the user to its mistake.
-                    form.add_error(
-                        'password_confirmation',
-                        'Vous n\'avez pas renseigné '
-                        'deux fois le même mot de passe.')
             else:
                 # This username already exist,
                 # we need to informed the user to choose another name.
                 form.add_error(
                     'username',
-                    f'Le nom d\'utilisateur {username} est déjà utilisé.')
+                    f'Le nom d\'utilisateur "{username}" est déjà utilisé.')
+                check_password_confirmation(form)
 
     # if a GET (or any other method) we'll create a blank form
     else:
