@@ -1,15 +1,13 @@
-from ast import IsNot
 from itertools import chain
-from django.db import reset_queries
-from django.forms import PasswordInput
 
 # from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 # from django.urls import reverse
 from django.views import generic
 from django.db.models import CharField, Value
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from .models import Review, Ticket, UserFollows
 from .forms import ConnectionForm, RegistrationForm
@@ -18,21 +16,24 @@ from .utils import (
     get_users_subscriptions,
     get_users_viewable_reviews,
     get_users_viewable_tickets,
-    get_users_by_name
+    username_exists,
+    check_password_confirmation
 )
 
 
 def get_connection_data(request):
+    '''View used to manage user's log in.'''
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = ConnectionForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            print(request.POST['username'])
-            print(form.cleaned_data)
-            if request.user.is_authenticated:
-                login(request, request.user)
+            user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password'])
+            if user:
+                login(request, user)
                 # A backend authenticated the credentials
                 return redirect('reviews:feed')
 
@@ -44,14 +45,37 @@ def get_connection_data(request):
 
 
 def get_registration_data(request):
+    '''View used to append new user.'''
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = RegistrationForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            if get_users_by_name(form.cleaned_data.username):
-                return redirect('reviews:feed')
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            # If the username is not already used
+            if not username_exists(username):
+                # Check if the password has been correctly set twice
+                if (password == form.cleaned_data['password_confirmation']):
+                    # This user could be append to DB.
+                    user = User.objects.create_user(username, '', password)
+                    # And we could log in it
+                    login(request, user)
+                    return redirect('reviews:feed')
+                else:
+                    # The password confirmation doesn't correspond to the
+                    # password, we need to informed the user to its mistake.
+                    form.add_error(
+                        'password_confirmation',
+                        'Vous n\'avez pas renseigné '
+                        'deux fois le même mot de passe.')
+            else:
+                # This username already exist,
+                # we need to informed the user to choose another name.
+                form.add_error(
+                    'username',
+                    f'Le nom d\'utilisateur {username} est déjà utilisé.')
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -125,7 +149,7 @@ def subscription(request):
 
 def disconnect(request):
     logout(request)
-    return redirect('reviews')
+    return redirect('reviews:home_page')
 
 
 class FeedView(generic.ListView):

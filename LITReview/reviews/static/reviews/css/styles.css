@@ -194,6 +194,13 @@ nav a:hover {
     position: relative;
 }
 
+.errorlist{
+    color: red;
+    font-size: small;
+    list-style-type: none;
+    margin: 10px 0 0;
+}
+
 
 /***********/
 /* Content */
