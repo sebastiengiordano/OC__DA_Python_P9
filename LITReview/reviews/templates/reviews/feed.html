@@ -4,12 +4,33 @@
 
 {% block content %}
 
+    <div id="feed_page">
+        <div class="feed_page_format">
+            <div class="in_line">
+                <div class="wrap_button">
+                    <p>
+                        <button type="button">
+                            <a href="{% url 'reviews:ask_for_review' %}">Demander une critique</a>
+                        </button>
+                    </p>
+                </div>
+                <div class="wrap_button">
+                    <p>
+                        <button type="button">
+                            <a href="{% url 'reviews:create_review' %}">Créer une critique</a>
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if posts.count > 0 %}
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'ticket_snippet.html' %}
+                {% include 'ticket_snippet.html' with post=post%}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'review_snippet.html' %}
+                {% include 'review_snippet.html' with post=post%}
             {% endif %}
         {% endfor %}
     {% else %}

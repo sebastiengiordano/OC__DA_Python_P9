@@ -10,7 +10,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .models import Review, Ticket, UserFollows
-from .forms import ConnectionForm, RegistrationForm
+from .forms import (
+    ConnectionForm,
+    RegistrationForm,
+    CreateReview,
+    AskForReview)
 from .utils import (
     get_users_subscribers,
     get_users_subscriptions,
@@ -80,6 +84,7 @@ def get_registration_data(request):
 
 @login_required(login_url='reviews:home_page')
 def feed(request):
+    '''View which manage the feed page.'''
     reviews = get_users_viewable_reviews(request.user)
     # returns queryset of reviews
     reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
@@ -98,7 +103,46 @@ def feed(request):
 
 
 @login_required(login_url='reviews:home_page')
+def create_review(request):
+    '''View used to write a new review.'''
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CreateReview(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            return redirect('reviews:feed')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CreateReview()
+
+    return render(request, 'reviews/create_review.html', {'form': form})
+
+
+@login_required(login_url='reviews:home_page')
+def ask_for_review(request):
+    '''View used to ask for a review.'''
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = AskForReview(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Save the review request
+            review = form.cleaned_data
+            return redirect('reviews:feed')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = AskForReview()
+
+    return render(request, 'reviews/ask_for_review.html', {'form': form})
+
+
+@login_required(login_url='reviews:home_page')
 def posts(request):
+    '''View which manage the posts page.'''
     reviews = get_users_viewable_reviews(request.user)
     # returns queryset of reviews
     reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
@@ -118,6 +162,7 @@ def posts(request):
 
 @login_required(login_url='reviews:home_page')
 def subscription(request):
+    '''View which manage the subscription page.'''
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         followed_user_to_removed = request.POST['submit']
@@ -142,6 +187,7 @@ def subscription(request):
 
 
 def disconnect(request):
+    '''Function used to log out the current user.'''
     logout(request)
     return redirect('reviews:home_page')
 

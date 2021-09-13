@@ -3,14 +3,14 @@
 
 {% block content %}
 
-    <div id="registration_page">
-        <div class="registration_page_format">
-            <form action="{% url 'reviews:registration' %}" method="post">
+    <div id="ask_for_review_page">
+        <div class="ask_for_review_page_format">
+            <form action="{% url 'reviews:ask_for_review' %}" method="post">
                 {% csrf_token %}
 
                 <div>
                     <p>
-                        <label>Inscrivez-vous</label>
+                        <label>Créer un ticket</label>
                     </p>
                     {{ form }}
                 </div>
@@ -18,14 +18,14 @@
                 <div class="in_reverse_line">
                     <div class="wrap_button">
                         <p>
-                            <input type="submit" value="S'inscrire">
+                            <button type="button">
+                                <a href="{% url 'reviews:home_page' %}">Télécharger fichier</a>
+                            </button>
                         </p>
                     </div>
                     <div class="wrap_button">
                         <p>
-                            <button type="button">
-                                <a href="{% url 'reviews:home_page' %}">Retourner</a>
-                            </button>
+                            <input type="submit" value="Envoyer">
                         </p>
                     </div>
                 </div>
