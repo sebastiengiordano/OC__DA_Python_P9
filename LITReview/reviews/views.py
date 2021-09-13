@@ -78,7 +78,7 @@ def get_registration_data(request):
     return render(request, 'reviews/registration.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='reviews:home_page')
 def feed(request):
     reviews = get_users_viewable_reviews(request.user)
     # returns queryset of reviews
@@ -97,7 +97,7 @@ def feed(request):
     return render(request, 'reviews/feed.html', context={'posts': posts})
 
 
-@login_required
+@login_required(login_url='reviews:home_page')
 def posts(request):
     reviews = get_users_viewable_reviews(request.user)
     # returns queryset of reviews
@@ -116,7 +116,7 @@ def posts(request):
     return render(request, 'reviews/posts.html', context={'posts': posts})
 
 
-@login_required
+@login_required(login_url='reviews:home_page')
 def subscription(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
