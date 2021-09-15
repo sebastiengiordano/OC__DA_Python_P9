@@ -4,28 +4,30 @@
 {% block content %}
 
     <div id="create_review_page">
+
+        <div class="create_review_header">
+            <p>
+                <label>Créer une critique</label>
+            </p>
+        </div>
+
         <div class="create_review_page_format">
             <form action="{% url 'reviews:create_review' %}" method="post">
                 {% csrf_token %}
 
-                <div>
-                    <p>
-                        <label>Créer un ticket</label>
-                    </p>
-                    {{ form.as_table }}
-                </div>
+                {{ form.as_table }}
 
-                <div class="in_reverse_line">
-                    <div class="wrap_button">
-                        <p>
-                            <input type="submit" value="Envoyer">
-                        </p>
-                    </div>
+                <div class="create_review_button_style">
                     <div class="wrap_button">
                         <p>
                             <button type="button">
                                 <a href="{% url 'reviews:feed' %}">Télécharger fichier</a>
                             </button>
+                        </p>
+                    </div>
+                    <div class="wrap_button">
+                        <p>
+                            <input type="submit" value="Envoyer">
                         </p>
                     </div>
                 </div>

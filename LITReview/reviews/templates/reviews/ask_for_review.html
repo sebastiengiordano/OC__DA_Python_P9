@@ -5,25 +5,25 @@
 
     <div id="ask_for_review_page">
         <div class="ask_for_review_page_format">
+
+            <div>
+                <p>
+                    <label>Créer un ticket</label>
+                </p>
+            </div>
+
             <form action="{% url 'reviews:ask_for_review' %}" method="post">
                 {% csrf_token %}
 
-                <div>
-                    <p>
-                        <label>Créer un ticket</label>
-                    </p>
-                    {{ form }}
-                </div>
+                {{ form.as_table }}
 
-                <div class="in_line">
-                    <div class="wrap_button">
+                <div class="ask_for_review_wrap_button">
+                    <div class="ask_for_review_wrap_button_top">
                         <p>
-                            <button type="button">
-                                <a href="{% url 'reviews:home_page' %}">Télécharger fichier</a>
-                            </button>
+                            <input type="submit" name="image_download" value="Télécharger fichier">
                         </p>
                     </div>
-                    <div class="wrap_button">
+                    <div class="ask_for_review_wrap_button_bottom">
                         <p>
                             <input type="submit" value="Envoyer">
                         </p>

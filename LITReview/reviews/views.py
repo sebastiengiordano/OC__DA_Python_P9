@@ -1,4 +1,5 @@
 from itertools import chain
+from django.http.request import RAISE_ERROR
 
 # from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
@@ -138,9 +139,14 @@ def ask_for_review(request):
         form = AskForReview(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # Save the review request
-            review = form.cleaned_data
-            return redirect('reviews:feed')
+            image_download = form.cleaned_data["image_download"]
+            if image_download == "Télécharger fichier":
+                # Add image file management
+                RAISE_ERROR
+            else:
+                # Save the review request
+                review = form.cleaned_data
+                return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form
     else:

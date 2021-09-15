@@ -189,9 +189,9 @@ nav a:hover {
 }
 
 
-/**************/
-/* feed Pages */
-/**************/
+/*************/
+/* feed Page */
+/*************/
 
 #feed_page{
     display: flex;
@@ -207,50 +207,160 @@ nav a:hover {
     text-align: center;
 }
 
-#ask_for_review_page{
+
+/**********************/
+/* Create review Page */
+/**********************/
+
+#create_review_page{
     display: flex;
+    flex-direction: column;
+    white-space: pre-line;
     position: relative;
-    font-size: 2.3em;
+    align-items: center;
+    font-size: 2em;
     font-weight: bold;
     justify-content: space-around;
     top: -1em;
     text-align: center;
+    max-width: 800px;
+    left: 25%;
+    right: 25%;
 }
 
-.feed_page_format {
-    display: block;
+.create_review_page_format{
+    font-size: 1.2em;
+    text-align: left;
+}
+
+.create_review_page_format label{
+    font-size: 1em;
+    text-align: left;
+} 
+
+.create_review_header{
+    font-size: 1.3em;
+    position: absolute;
     text-align: center;
+    top: -1em;
 }
 
-#id_book_article_title{
-    color:red;
+.create_review_header p{
+    margin: 0;
 }
 
-#id_rating{
-    display: inline;
-    size: 200px;
+
+input#id_book_article_section, #id_review_section{
+    visibility: hidden;
+    width: 100%;
+    height: 0;
 }
 
-.in_line {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: space-between;
-    position: relative;
+#id_book_article_title, #id_review_title{
+    width: 96%;
+    height: 30px;
+    text-align: left;
+    padding: 0 2%;
+    color: black;
+    margin-bottom: 3%;
 }
 
-.in_reverse_line {
-    display: inline-flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    position: relative;
+input#id_description, input#id_commentary {
+    width: 96%;
+    height: 200px;
+    text-align: left;
+    padding: 0 2%;
+    color: black;
+    margin-bottom: 3%;
 }
 
-.errorlist{
-    color: red;
-    font-size: small;
+input#id_image_download{
+    margin: 0 70% 5% 5%;
+}
+
+input#id_rating {
     list-style-type: none;
-    margin: 10px 0 0;
     padding: 0;
+    margin: 0;
+    width: 700px;
+    height: 20px;
+}
+
+.rating{
+    display: inline-flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 90%;
+    height: 20px;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 0.7em;
+}
+
+.create_review_wrap_button {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    width: 800px;
+    height: 400px;
+}
+
+.create_review_wrap_button_top {
+    top: 0;
+    left: 0;
+}
+
+.create_review_wrap_button_bottom {
+    bottom: 0;
+    right: 0;
+}
+
+
+/***********************/
+/* Ask for review Page */
+/***********************/
+
+#ask_for_review_page{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    justify-content: space-around;
+    top: -1em;
+    text-align: center;
+    max-width: 800px;
+    left: 25%;
+    right: 25%;
+    padding: 0 10;
+}
+
+#ask_for_review_page_format{
+}
+
+#ask_for_review_page_format input[type=text], input[type=password] {
+    padding: 10px 70px;
+    margin: 4px 2px;
+}
+
+.ask_for_review_wrap_button {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    width: 800px;
+    height: 400px;
+}
+
+.ask_for_review_wrap_button_top {
+    top: 0;
+    left: 0;
+}
+
+.ask_for_review_wrap_button_bottom {
+    bottom: 0;
+    right: 0;
 }
 
 
@@ -356,6 +466,33 @@ button a{
     color: inherit;
 }
 
+
+/*********/
+/* Other */
+/*********/
+
 .wrap_button{
     margin: 10px;
+}
+
+.in_line {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+
+.in_reverse_line {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    position: relative;
+}
+
+.errorlist{
+    color: red;
+    font-size: small;
+    list-style-type: none;
+    margin: 10px 0 0;
+    padding: 0;
 }

@@ -38,6 +38,50 @@ class RegistrationForm(forms.Form):
 
 
 class CreateReview(forms.Form):
+    book_article_section = forms.CharField(
+        label="Livre / Article",
+        widget=forms.TextInput(attrs={'class': 'book_article_section'})
+        )
+    book_article_title = forms.CharField(
+        label="Titre",
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'book_article_title'})
+        )
+    description = forms.CharField(
+        label="Description",
+        min_length=1, max_length=1000,
+        widget=forms.TextInput(attrs={'class': 'description'})
+        )
+    image_download = forms.CharField(
+        label="Image",
+        widget=forms.TextInput(attrs={'type': 'submit', 'value': "Télécharger fichier", 'class': 'image_download'})
+        )
+    review_section = forms.CharField(
+        label="Critique",
+        widget=forms.TextInput(attrs={'class': 'review_section'})
+        )
+    review_title = forms.CharField(
+        label="Titre",
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'review_title'})
+        )
+    rating = forms.ChoiceField(
+        label="Note",
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'rating'}),
+        choices=[(str(x), str(x)) for x in range(6)]
+        )
+    commentary = forms.CharField(
+        label="Commentaire",
+        max_length=100,
+        widget=forms.TextInput()
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""  # Removes : as label suffix
+
+
+class AskForReview(forms.Form):
     review_title = forms.CharField(
         label="Titre",
         max_length=100,
@@ -47,32 +91,4 @@ class CreateReview(forms.Form):
         label="",
         min_length=8, max_length=20,
         widget=forms.TextInput(attrs={'class': 'description'})
-        )
-
-
-class AskForReview(forms.Form):
-    book_article_title = forms.CharField(
-        label="Titre",
-        max_length=100,
-        widget=forms.TextInput(attrs={'class': 'book_article_title'})
-        )
-    description = forms.CharField(
-        label="",
-        min_length=1, max_length=1000,
-        widget=forms.TextInput(attrs={'class': 'description'})
-        )
-    review_title = forms.CharField(
-        label="Titre",
-        max_length=100,
-        widget=forms.TextInput(attrs={'class': 'review_title'})
-        )
-    rating = forms.ChoiceField(
-        label="Note",
-        widget=forms.CheckboxSelectMultiple(),
-        choices=[(str(x), str(x)) for x in range(6)]
-        )
-    commentary = forms.CharField(
-        label="Commentaire",
-        max_length=100,
-        widget=forms.TextInput()
         )
