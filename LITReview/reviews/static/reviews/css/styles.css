@@ -208,11 +208,11 @@ nav a:hover {
 }
 
 
-/**********************/
-/* Create review Page */
-/**********************/
+/*********************************/
+/* Create or ask for review Page */
+/*********************************/
 
-#create_review_page{
+#review_page{
     display: flex;
     flex-direction: column;
     white-space: pre-line;
@@ -228,35 +228,28 @@ nav a:hover {
     right: 25%;
 }
 
-.create_review_page_format{
+.review_page_format{
     font-size: 1.2em;
     text-align: left;
 }
 
-.create_review_page_format label{
+.review_page_format label{
     font-size: 1em;
     text-align: left;
 } 
 
-.create_review_header{
+.review_header{
     font-size: 1.3em;
     position: absolute;
     text-align: center;
     top: -1em;
 }
 
-.create_review_header p{
+.review_header p{
     margin: 0;
 }
 
-
-input#id_book_article_section, #id_review_section{
-    visibility: hidden;
-    width: 100%;
-    height: 0;
-}
-
-#id_book_article_title, #id_review_title{
+.review_page_form_title{
     width: 96%;
     height: 30px;
     text-align: left;
@@ -265,7 +258,12 @@ input#id_book_article_section, #id_review_section{
     margin-bottom: 3%;
 }
 
-input#id_description, input#id_commentary {
+.review_page_form_label {
+    font-size: 1em;
+    text-align: left;
+}
+
+.description, .commentary {
     width: 96%;
     height: 200px;
     text-align: left;
@@ -274,9 +272,14 @@ input#id_description, input#id_commentary {
     margin-bottom: 3%;
 }
 
-input#id_image_download{
-    margin: 0 70% 5% 5%;
+.id_image_download{
+    margin: 0 70% 10% 5%;
 }
+
+
+/**********************/
+/* Create review Page */
+/**********************/
 
 input#id_rating {
     list-style-type: none;
@@ -320,25 +323,6 @@ input#id_rating {
 /***********************/
 /* Ask for review Page */
 /***********************/
-
-#ask_for_review_page{
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    justify-content: space-around;
-    top: -1em;
-    text-align: center;
-    max-width: 800px;
-    left: 25%;
-    right: 25%;
-    padding: 0 10;
-}
-
-#ask_for_review_page_format{
-}
 
 #ask_for_review_page_format input[type=text], input[type=password] {
     padding: 10px 70px;

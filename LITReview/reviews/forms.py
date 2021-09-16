@@ -38,10 +38,6 @@ class RegistrationForm(forms.Form):
 
 
 class CreateReview(forms.Form):
-    book_article_section = forms.CharField(
-        label="Livre / Article",
-        widget=forms.TextInput(attrs={'class': 'book_article_section'})
-        )
     book_article_title = forms.CharField(
         label="Titre",
         max_length=100,
@@ -91,4 +87,8 @@ class AskForReview(forms.Form):
         label="",
         min_length=8, max_length=20,
         widget=forms.TextInput(attrs={'class': 'description'})
+        )
+    image_download = forms.CharField(
+        label="Image",
+        widget=forms.TextInput(attrs={'type': 'submit', 'value': "Télécharger fichier", 'class': 'image_download'})
         )

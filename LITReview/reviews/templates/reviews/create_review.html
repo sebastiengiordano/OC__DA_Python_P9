@@ -3,29 +3,29 @@
 
 {% block content %}
 
-    <div id="create_review_page">
+    <div id="review_page">
 
-        <div class="create_review_header">
+        <div class="review_header">
             <p>
                 <label>Créer une critique</label>
             </p>
         </div>
 
-        <div class="create_review_page_format">
+        <div class="review_page_format">
             <form action="{% url 'reviews:create_review' %}" method="post">
                 {% csrf_token %}
 
-                {{ form.as_table }}
+                {{ form.as_p }}
 
-                <div class="create_review_button_style">
-                    <div class="wrap_button">
+                <div class="create_review_wrap_button">
+                    <div class="create_review_wrap_button_top">
                         <p>
                             <button type="button">
                                 <a href="{% url 'reviews:feed' %}">Télécharger fichier</a>
                             </button>
                         </p>
                     </div>
-                    <div class="wrap_button">
+                    <div class="create_review_wrap_button_bottom">
                         <p>
                             <input type="submit" value="Envoyer">
                         </p>
