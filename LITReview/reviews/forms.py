@@ -78,17 +78,16 @@ class CreateReview(forms.Form):
 
 
 class AskForReview(forms.Form):
-    review_title = forms.CharField(
+    title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'review_title'})
+        widget=forms.TextInput(attrs={'class': 'review_page_form_title'})
         )
     description = forms.CharField(
         label="",
-        min_length=8, max_length=20,
+        min_length=10,
         widget=forms.TextInput(attrs={'class': 'description'})
         )
-    image_download = forms.CharField(
-        label="Image",
-        widget=forms.TextInput(attrs={'type': 'submit', 'value': "Télécharger fichier", 'class': 'image_download'})
+    image_download = forms.ImageField(
+        label="Image"
         )
