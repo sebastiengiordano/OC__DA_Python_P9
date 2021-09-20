@@ -214,25 +214,16 @@ nav a:hover {
 
 #review_page{
     display: block;
-    /* white-space: pre-line; */
     position: relative;
-    /* align-items: center; */
     font-size: 1.2em;
     font-weight: bold;
-    /* justify-content: space-around; */
     top: 0;
-    /* text-align: center; */
-    max-width: 80%;
+    width: 80%;
+    min-width: 1200px;
     left: 8%;
     bottom: 100px;
     border: 3px solid chocolate;
-    /* margin-bottom: 200px; */
     padding: 1%;
-}
-
-.review_page_format{
-    /* font-size: 1.2em;
-    text-align: left; */
 }
 
 .review_header{
@@ -240,8 +231,14 @@ nav a:hover {
     font-weight: bold;
     position: relative;
 }
+
 .review_header_wrap{
     text-align: center;
+}
+
+.review_page_format{
+    /* font-size: 1.2em;
+    text-align: left; */
 }
 
 .review_page_form_title{
@@ -257,13 +254,14 @@ nav a:hover {
     text-align: left;
     color: chocolate;
 }
+
 .description, .commentary {
     width: 92%;
     height: 200px;
     /* text-align: left; */
     padding: 0 2%;
     color: black;
-    margin-bottom: 8%;
+    margin-bottom: 6%;
 }
 
 .image_download_label {
@@ -280,11 +278,9 @@ label[for='id_image_download'] {
     font-weight: 900;
 }
 
-
 .image_download {
     padding: 0 5%;
 }
-
 
 #id_image_download{
     display: none;
@@ -448,10 +444,11 @@ input[type=text], input[type=password] {
     padding: 10px 70px;
     margin: 4px 2px;
     cursor: text;
-    font-size: 0.5em;
+    font-size: medium;
     text-decoration: none;
     text-align: justify;
     text-indent: 10px;
+    white-space:normal;
 }
 
 input[type=button], input[type=submit], input[type=file], .input_button {
@@ -501,4 +498,5 @@ button a{
     list-style-type: none;
     margin: 10px 0 0;
     padding: 0;
+    height: 35px;
 }

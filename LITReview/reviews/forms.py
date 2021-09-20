@@ -81,13 +81,18 @@ class AskForReview(forms.Form):
     title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'review_page_form_title'})
+        widget=forms.TextInput(attrs={'class': 'review_page_form_title'}),
+        error_messages={'required': 'Merci de renseigner un titre.'}
         )
     description = forms.CharField(
         label="",
         min_length=10,
-        widget=forms.TextInput(attrs={'class': 'description'})
+        widget=forms.TextInput(attrs={'class': 'description'}),
+        error_messages={
+            'required': 'Merci de renseigner '
+            'la description de votre ticket.'}
         )
     image_download = forms.ImageField(
-        label="Image"
+        label="Image",
+        required=False
         )
