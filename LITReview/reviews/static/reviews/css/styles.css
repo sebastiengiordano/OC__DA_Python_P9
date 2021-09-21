@@ -500,3 +500,13 @@ button a{
     padding: 0;
     height: 35px;
 }
+
+.message{
+    color: darkblue;
+    font-size: medium;
+    text-align: center;
+    list-style-type: none;
+    margin: 10px 0 0;
+    padding: 0;
+    height: 50px;
+}

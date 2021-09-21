@@ -109,7 +109,14 @@ def feed(request):
         key=lambda post: post.time_created,
         reverse=True
     )
-    return render(request, 'reviews/feed.html', context={'posts': posts})
+
+    # Update context
+    context = {}
+    context['posts'] = posts
+    # Check if there is message to display
+    if request.session.get('ask_for_review') == 'save_new_ticket':
+        context['message']= 'save_new_ticket'
+    return render(request, 'reviews/feed.html', context=context)
 
 
 @login_required(login_url='reviews:home_page')
@@ -139,14 +146,19 @@ def ask_for_review(request):
         form = AskForReview(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            image_download = form.cleaned_data["image_download"]
-            if image_download == "Télécharger fichier":
-                # Add image file management
-                RAISE_ERROR
-            else:
+            ticket = Ticket()
+            ticket.title = form.cleaned_data["title"]
+            ticket.description = form.cleaned_data["description"]
+            ticket.user = request.user
+            ticket.image = request.FILES.get('image_download', None)
+            ticket.save()
+            # if image_download == "Télécharger fichier":
+            #     # Add image file management
+            #     RAISE_ERROR
+            # else:
                 # Save the review request
-                review = form.cleaned_data
-                return redirect('reviews:feed')
+            request.session['ask_for_review'] = 'save_new_ticket'
+            return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form
     else:

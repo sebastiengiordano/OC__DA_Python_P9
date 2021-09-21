@@ -3,7 +3,13 @@
 
 
 {% block content %}
-
+    {% if  message == 'save_new_ticket' %}
+        <div class="message">
+            <p>
+                Votre ticket a été créé.
+            </p>
+        </div>
+    {% endif %}
     <div id="feed_page">
         <div class="feed_page_format">
             <div class="in_line">
