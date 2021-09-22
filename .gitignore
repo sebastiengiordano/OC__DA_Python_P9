@@ -1,2 +1,6 @@
 env/
 __pycache__/
+# exclude every pictures
+pictures/*
+# but keep the folder in repo
+!pictures/.gitkeep 

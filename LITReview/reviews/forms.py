@@ -41,25 +41,26 @@ class CreateReview(forms.Form):
     book_article_title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'book_article_title'})
+        widget=forms.TextInput(attrs={'class': 'review_page_form_title'}),
+        error_messages={'required': 'Merci de renseigner un titre.'}
         )
     description = forms.CharField(
         label="Description",
-        min_length=1, max_length=1000,
-        widget=forms.TextInput(attrs={'class': 'description'})
+        min_length=10, max_length=2500,
+        widget=forms.TextInput(attrs={'class': 'description'}),
+        error_messages={
+            'required': 'Merci de renseigner '
+            'la description de votre livre ou article.'}
         )
-    image_download = forms.CharField(
+    image_download = forms.ImageField(
         label="Image",
-        widget=forms.TextInput(attrs={'type': 'submit', 'value': "Télécharger fichier", 'class': 'image_download'})
-        )
-    review_section = forms.CharField(
-        label="Critique",
-        widget=forms.TextInput(attrs={'class': 'review_section'})
+        required=False
         )
     review_title = forms.CharField(
         label="Titre",
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'review_title'})
+        widget=forms.TextInput(attrs={'class': 'review_page_form_title'}),
+        error_messages={'required': 'Merci de renseigner un titre.'}
         )
     rating = forms.ChoiceField(
         label="Note",
@@ -67,9 +68,10 @@ class CreateReview(forms.Form):
         choices=[(str(x), str(x)) for x in range(6)]
         )
     commentary = forms.CharField(
-        label="Commentaire",
-        max_length=100,
-        widget=forms.TextInput()
+        label="Commentaire",        
+        min_length=10, max_length=2500,
+        widget=forms.TextInput(attrs={'class': 'commentary'}),
+        error_messages={'required': 'Merci de mettre un commentaire.'}
         )
 
     def __init__(self, *args, **kwargs):
@@ -86,7 +88,7 @@ class AskForReview(forms.Form):
         )
     description = forms.CharField(
         label="",
-        min_length=10,
+        min_length=10, max_length=2500,
         widget=forms.TextInput(attrs={'class': 'description'}),
         error_messages={
             'required': 'Merci de renseigner '

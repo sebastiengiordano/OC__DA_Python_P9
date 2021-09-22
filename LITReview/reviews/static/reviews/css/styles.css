@@ -48,8 +48,8 @@ body {
 }
 
 #bloc_page {
-    min-height: 97vh;
-    position: relative;
+    /* min-height: 97vh; */
+    /* position: relative; */
 }
 
 h1 {
@@ -212,7 +212,7 @@ nav a:hover {
 /* Create or ask for review Page */
 /*********************************/
 
-#review_page{
+.review_page{
     display: block;
     position: relative;
     font-size: 1.2em;
@@ -224,6 +224,7 @@ nav a:hover {
     bottom: 100px;
     border: 3px solid chocolate;
     padding: 1%;
+    padding-bottom: 2%;
 }
 
 .review_header{
@@ -237,8 +238,9 @@ nav a:hover {
 }
 
 .review_page_format{
-    /* font-size: 1.2em;
-    text-align: left; */
+    /* border: 1px solid chocolate;
+    box-shadow: 10px 5px 5px chocolate;
+    padding: 0px; */
 }
 
 .review_page_form_title{
@@ -286,10 +288,40 @@ label[for='id_image_download'] {
     display: none;
 }
 
+.review_wrap_button_bottom {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    right: 5%;
+}
+
 
 /**********************/
 /* Create review Page */
 /**********************/
+
+.review_page_bottom{
+    display: block;
+    position: relative;
+    font-size: 1.2em;
+    font-weight: bold;
+    top: 0;
+    width: 80%;
+    min-width: 1200px;
+    left: 8%;
+    bottom: 100px;
+    border: 3px solid chocolate;
+    border-top: 0;
+    padding: 1%;
+}
+
+.review_page_section_title{
+    text-align: left;
+    width: 92%;
+    padding: 0;
+    font-size: 1.5em;
+}
 
 input#id_rating {
     list-style-type: none;
@@ -302,13 +334,13 @@ input#id_rating {
 .rating{
     display: inline-flex;
     list-style-type: none;
-    padding: 0;
+    padding: 2% 30% 0 0;
     margin: 0;
-    width: 90%;
-    height: 20px;
+    min-width: 75%;
+    max-width: 80%;
     justify-content: space-around;
-    align-items: center;
-    font-size: 0.7em;
+    text-align: center;
+    color: chocolate;
 }
 
 .create_review_wrap_button {
@@ -322,11 +354,6 @@ input#id_rating {
 .create_review_wrap_button_top {
     top: 0;
     left: 0;
-}
-
-.create_review_wrap_button_bottom {
-    bottom: 0;
-    right: 0;
 }
 
 
@@ -354,14 +381,6 @@ input#id_rating {
     left: 5%;
 }
 
-.ask_for_review_wrap_button_bottom {
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    bottom: 0;
-    right: 5%;
-}
-
 
 /***********/
 /* Content */
@@ -370,12 +389,11 @@ input#id_rating {
 .information{
     display: flex;
     position: relative;
-    margin: 0 30%;
+    margin: 0 30% 20%;
     font-size: 2em;
     font-weight: bold;
     justify-content: space-around;
     text-align: center;
-    top: 7em;
 }
 
 .h1{
@@ -416,7 +434,7 @@ table, th, td {
 
 footer {
     display: block;
-    position: absolute;
+    position: relative;
     bottom: 0;
     background:bisque;
     border-top: 2px solid black;

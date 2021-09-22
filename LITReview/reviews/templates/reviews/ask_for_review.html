@@ -1,8 +1,11 @@
-{% extends 'reviews/base.html' %}
+{% extends 'reviews/base_with_navbar.html' %}
 
 
 {% block content %}
 
+    {% comment %}
+        Header.
+    {% endcomment %}
     <div class="review_header_wrap">
         <div class="review_header">
             <p>
@@ -12,11 +15,20 @@
     </div>
 
 
-    <div id="review_page">
-
-        <div class="review_page_format">
-            <form action="{% url 'reviews:ask_for_review' %}" enctype="multipart/form-data" method="post">
-                {% csrf_token %}
+    {% comment %}
+        Form display.
+    {% endcomment %}
+    <div class="review_page">
+        <form action="{% url 'reviews:ask_for_review' %}" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="review_page_format">
+                <div class="review_header_wrap">
+                    <div class="review_header">
+                        <p>
+                            <label>Créer un ticket</label>
+                        </p>
+                    </div>
+                </div>
 
                 <div class="review_page_form_title">
                     {{ form.title.errors }}
@@ -33,20 +45,20 @@
                 </div>
                 <div class="image_download">
                     {{ form.image_download.errors }}
-                    <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
                     {% if form.image_download %}
                         {{ form.image_download }}
                     {% endif %}
+                    <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
                 </div>
 
-                <div class="ask_for_review_wrap_button_bottom">
+                <div class="review_wrap_button_bottom">
                     <p>
                         <input type="submit" value="Envoyer">
                     </p>
                 </div>
 
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 
 {% endblock %}
