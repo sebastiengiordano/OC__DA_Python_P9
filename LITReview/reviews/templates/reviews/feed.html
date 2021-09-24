@@ -41,12 +41,12 @@
     {% comment %}
         Display feed.
     {% endcomment %}
-    {% if posts.count > 0 %}
+    {% if posts|length > 0 %}
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'ticket_snippet.html' with post=post%}
+                {% include 'reviews/ticket_snippet.html' with post=post%}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'review_snippet.html' with post=post%}
+                {% include 'reviews/review_snippet.html' with post=post%}
             {% endif %}
         {% endfor %}
     {% else %}
@@ -55,4 +55,15 @@
         </div>
     {% endif %}
 
+{% endblock %}
+
+{% block footer %}
+    <!-- Footer-->
+    <div class="footer">
+        <div class="footer-text">
+            <p>
+            Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+            </p>
+        </div>
+    </footer>
 {% endblock %}

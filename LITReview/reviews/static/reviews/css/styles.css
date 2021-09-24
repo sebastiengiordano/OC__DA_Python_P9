@@ -32,23 +32,23 @@
 /********/
 /* Body */
 /********/
-* html {
+html {
     min-height: 100vh;
-    margin: 10px;
+    margin: 0;
     padding: 0;
-    position: relative;
 }
 
 body {
     background: url('../img/background.jpg');
     font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: chocolate;
-    min-height: 1000px;
-    min-width: 1000px;
+    background-repeat: round;
+    /* min-height: 1000px;
+    min-width: 1000px; */
 }
 
 #bloc_page {
-    /* min-height: 97vh; */
+    min-height: 100vh;
     /* position: relative; */
 }
 
@@ -157,6 +157,7 @@ nav a:hover {
     font-weight: bold;
     justify-content: space-around;
     top: 5em;
+    padding-bottom: 350px;
 }
 
 .home_page_format {
@@ -205,6 +206,30 @@ nav a:hover {
 .feed_page_format {
     display: block;
     text-align: center;
+}
+
+.review_snippet_header{
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    display: inline-flexbox;
+}
+
+.snippet_user_request{
+    width: 60%;
+    height: 30px;
+    padding: 0 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.snippet_title{
+    width: 60%;
+    height: 30px;
+    padding: 0 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 
 
@@ -281,7 +306,7 @@ label[for='id_image_download'] {
 }
 
 .image_download {
-    padding: 0 5%;
+    padding: 10px 5%;
 }
 
 #id_image_download{
@@ -435,6 +460,18 @@ table, th, td {
 footer {
     display: block;
     position: relative;
+    bottom: 0;
+    background:bisque;
+    border-top: 2px solid black;
+    margin-top: 20px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    min-width: 100%;
+}
+
+.footer {
+    display: block;
+    position: absolute;
     bottom: 0;
     background:bisque;
     border-top: 2px solid black;

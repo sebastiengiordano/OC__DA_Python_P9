@@ -1,29 +1,21 @@
-{% block content %}
+{% load static %}
 
-    <label>Vous avez publié une critique</label>
-    <label>{{post.user.username}} a demandé une critique</label>
-    <label>{{post.time_created}}</label>
-    <label>{{post.description}}</label>
+<div class="ticket_snippet_header">
+    <div class="snippet_user_request">
+        <label>{{post.user.username}} a demandé une critique</label>
+    </div>
+</div>
 
-    {% if subscribtions.count > 0 %}
-        <table>
-            <tr>
-                <th>Pseudo</th>
-                <th>Supprimer</th>
-            </tr>
-            {% for subscribtion in subscribtions %}
-                <tr>
-                    <td>{{subscribtion.username}}</td>
-                    <td>
-                        <form action='reviews:subscribtion' method='POST'>
-                            <button type='submit' name=subscribtion.id>Se désabonner</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <div class="subscribe_information">
-            <p>Vous ne suivez personne.</p>
-        </div>
-    {% endif %}
+<div class="snippet_title">
+    {{post.title}}
+</div>
+
+<div class="snippet_description">
+    {{post.description}}
+</div>
+
+{% if post.image %}
+    <div class="ticket_snippet_image">
+        <img src={{post.image.url}}>
+    </div>
+{% endif %}

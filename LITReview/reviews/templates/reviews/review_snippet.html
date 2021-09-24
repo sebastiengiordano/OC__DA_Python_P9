@@ -1,0 +1,19 @@
+<div class="review_snippet_header">
+    <div class="snippet_user_request">
+        <label>Vous avez publié une critique</label>
+    </div>
+</div>
+
+<div class="snippet_title">
+    {{post.title}}
+</div>
+
+<div class="snippet_description">
+    {{post.description}}
+</div>
+
+{% if post.image %}
+    <div class="ticket_snippet_image">
+        <img src=post.image.url>
+    </div>
+{% endif %}
