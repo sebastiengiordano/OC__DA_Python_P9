@@ -10,6 +10,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from django.views.generic.base import TemplateView
+
 from .models import Review, Ticket, UserFollows
 from .forms import (
     ConnectionForm,
@@ -242,6 +244,17 @@ def disconnect(request):
     '''Function used to log out the current user.'''
     logout(request)
     return redirect('reviews:home_page')
+
+
+class ReviewInResponseToTicket(TemplateView):
+    template_name = 'review/response_review.html'
+    def get_context_data(self,*args, **kwargs):
+        context = super(
+            ReviewInResponseToTicket,
+            self).get_context_data(*args,**kwargs)
+        reviews = get_users_viewable_reviews(self.request.user)
+        context['reviews'] = reviews
+        return context
 
 
 # class FeedView(generic.ListView):

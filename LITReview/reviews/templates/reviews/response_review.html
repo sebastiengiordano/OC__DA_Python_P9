@@ -1,0 +1,15 @@
+
+<!-- Intro.html -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Intro</title>
+  </head>
+  <body>
+    <h1>All user reviews </h1>
+    {% for review in reviews %}
+    {{review.user.username}}
+    {% endfor %}
+  </body>
+</html>

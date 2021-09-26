@@ -12,6 +12,7 @@ urlpatterns = [
     path('posts/', views.posts, name='posts'),
     path('subscription/', views.subscription, name='subscription'),
     path('disconnect/', views.disconnect, name='disconnect'),
+    path('review_response', views.ReviewInResponseToTicket.as_view(), name='review_response'),
     # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     # path('<int:question_id>/vote/', views.vote, name='vote'),
