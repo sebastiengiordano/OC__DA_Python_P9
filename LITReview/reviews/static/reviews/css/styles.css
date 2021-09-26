@@ -43,13 +43,10 @@ body {
     font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: chocolate;
     background-repeat: round;
-    /* min-height: 1000px;
-    min-width: 1000px; */
 }
 
 #bloc_page {
     min-height: 100vh;
-    /* position: relative; */
 }
 
 h1 {
@@ -208,17 +205,32 @@ nav a:hover {
     text-align: center;
 }
 
-.review_snippet_header{
+
+/***********/
+/* snippet */
+/***********/
+
+.snippet_body{
+    margin: 10px;
+    padding: 20px;
+    display: flexbox;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 3px solid chocolate;
+    font-size: x-large;
+}
+
+.review_snippet_header, .ticket_snippet_header{
     width: 100%;
-    height: 40px;
+    min-height: 40px;
     padding: 0;
     margin: 0;
-    display: inline-flexbox;
+    display: flex;
 }
 
 .snippet_user_request{
-    width: 60%;
-    height: 30px;
+    width: 70%;
+    min-height: 30px;
     padding: 0 2%;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -226,10 +238,33 @@ nav a:hover {
 
 .snippet_title{
     width: 60%;
-    height: 30px;
+    min-height: 30px;
     padding: 0 2%;
     margin-top: 1%;
     margin-bottom: 1%;
+}
+
+.snippet_date{
+    position: relative;
+    right: 0;
+    top: 10px;
+}
+
+.snippet_description{
+    width: 92%;
+    text-align: justify;
+    padding: 0 2%;
+    margin-bottom: 2%;
+}
+
+.ticket_snippet_image{
+    
+}
+
+.feed_create_review_wrap_button{
+    margin: 10px;
+    display: flex;
+    flex-flow: row-reverse;
 }
 
 
@@ -285,7 +320,6 @@ nav a:hover {
 .description, .commentary {
     width: 92%;
     height: 200px;
-    /* text-align: left; */
     padding: 0 2%;
     color: black;
     margin-bottom: 6%;
@@ -493,7 +527,7 @@ footer {
 /* Widget */
 /**********/
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], #id_description {
     background-color:bisque;
     border: 1px solid chocolate;
     padding: 10px 70px;
@@ -504,6 +538,7 @@ input[type=text], input[type=password] {
     text-align: justify;
     text-indent: 10px;
     white-space:normal;
+    width: 92%;
 }
 
 input[type=button], input[type=submit], input[type=file], .input_button {
@@ -565,3 +600,9 @@ button a{
     padding: 0;
     height: 50px;
 }
+
+img {
+    width: 200px;
+    height: 300px;
+    margin: 20px 0 0 90px;
+  }

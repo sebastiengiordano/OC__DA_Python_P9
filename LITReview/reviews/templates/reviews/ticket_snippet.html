@@ -1,21 +1,42 @@
 {% load static %}
 
-<div class="ticket_snippet_header">
-    <div class="snippet_user_request">
-        <label>{{post.user.username}} a demandé une critique</label>
+<div class="snippet_body">
+
+    <div class="ticket_snippet_header">
+
+        <div class="snippet_user_request">
+            <label>{{post.user.username}} a demandé une critique</label>
+        </div>
+
+        <div class="snippet_date">
+            {{post.time_created|date:"h:m, d M Y"}}
+        </div>
     </div>
-</div>
 
-<div class="snippet_title">
-    {{post.title}}
-</div>
-
-<div class="snippet_description">
-    {{post.description}}
-</div>
-
-{% if post.image %}
-    <div class="ticket_snippet_image">
-        <img src={{post.image.url}}>
+    <div class="snippet_title">
+        {{post.title}}
     </div>
-{% endif %}
+
+    <div class="snippet_description">
+        {{post.description}}
+    </div>
+
+    {% if post.image %}
+        <div class="ticket_snippet_image">
+            <img src="{% static post.image.url %}">
+        </div>
+    {% endif %}
+
+    {% if not post.already_reviewed %}
+        <div class="feed_create_review_wrap_button">
+            <form class="form-signin" method="POST" action="{% url 'reviews:review_response' %}">
+                {% csrf_token %}
+                <div>
+                    <p>
+                        <input type="submit" value="Créer une critique">
+                    </p>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+</div>

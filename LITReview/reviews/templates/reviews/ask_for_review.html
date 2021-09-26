@@ -3,21 +3,6 @@
 
 {% block content %}
 
-    {% comment %}
-        Header.
-    {% endcomment %}
-    <div class="review_header_wrap">
-        <div class="review_header">
-            <p>
-                <label>Créer un ticket</label>
-            </p>
-        </div>
-    </div>
-
-
-    {% comment %}
-        Form display.
-    {% endcomment %}
     <div class="review_page">
         <form action="{% url 'reviews:ask_for_review' %}" enctype="multipart/form-data" method="post">
             {% csrf_token %}

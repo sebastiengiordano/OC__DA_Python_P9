@@ -89,7 +89,7 @@ class AskForReview(forms.Form):
     description = forms.CharField(
         label="",
         min_length=10, max_length=2500,
-        widget=forms.Textarea(attrs={'class': 'description'}),
+        widget=forms.Textarea(),
         error_messages={
             'required': 'Merci de renseigner '
             'la description de votre ticket.'}

@@ -102,6 +102,16 @@ def feed(request):
     tickets = get_users_viewable_tickets(request.user)
     # returns queryset of tickets
     tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+    already_reviewed = False
+    for ticket in tickets:
+        ticket.already_reviewed = False
+        for review in reviews:
+            if review.ticket == ticket:
+                already_reviewed = True
+                ticket.already_reviewed = True
+                break
+        if already_reviewed:
+            break
 
     # combine and sort the two types of posts
     posts = sorted(
@@ -122,6 +132,7 @@ def feed(request):
 @login_required(login_url='reviews:home_page')
 def create_review(request):
     '''View used to write a new review.'''
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -129,6 +140,9 @@ def create_review(request):
         # check whether it's valid:
         if form.is_valid():
             return redirect('reviews:feed')
+        else:
+            form = CreateReview()
+
 
     # if a GET (or any other method) we'll create a blank form
     else:

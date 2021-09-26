@@ -22,32 +22,39 @@
         {% csrf_token %}
         <div class="review_page">
             <div class="review_page_format">
-                <div class="review_page_section_title">
-                    <p>
-                        <label>Livre/Article</label>
-                    </p>
-                </div>
 
-                <div class="review_page_form_title">
-                    {{ form.book_article_title.errors }}
-                    <label class="review_page_form_label" for="{{ form.book_article_title.id_for_label }}">Titre</label>
-                    {{ form.book_article_title }}
-                </div>
-                <div class="description">
-                    {{ form.description.errors }}
-                    <label class="review_page_form_label" for="{{ form.description.id_for_label }}">Description</label>
-                    {{ form.description }}
-                </div>
-                <div class="image_download_label">
-                    <label class="review_page_form_label" for="{{ form.image_download.id_for_label }}">Image</label>
-                </div>
-                <div class="image_download">
-                    {{ form.image_download.errors }}
-                    {% if form.image_download %}
-                        {{ form.image_download }}
-                    {% endif %}
-                    <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
-                </div>
+                {% if post %}
+                    {% include 'reviews/ticket_snippet.html' with post=post%}
+                {% else %}
+
+                    <div class="review_page_section_title">
+                        <p>
+                            <label>Livre/Article</label>
+                        </p>
+                    </div>
+                    <div class="review_page_form_title">
+                        {{ form.book_article_title.errors }}
+                        <label class="review_page_form_label" for="{{ form.book_article_title.id_for_label }}">Titre</label>
+                        {{ form.book_article_title }}
+                    </div>
+                    <div class="description">
+                        {{ form.description.errors }}
+                        <label class="review_page_form_label" for="{{ form.description.id_for_label }}">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="image_download_label">
+                        <label class="review_page_form_label" for="{{ form.image_download.id_for_label }}">Image</label>
+                    </div>
+                    <div class="image_download">
+                        {{ form.image_download.errors }}
+                        {% if form.image_download %}
+                            {{ form.image_download }}
+                        {% endif %}
+                        <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
+                    </div>
+
+                {% endif %}
+
             </div>
         </div>
 
