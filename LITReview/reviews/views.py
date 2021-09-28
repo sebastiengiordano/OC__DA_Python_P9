@@ -104,16 +104,12 @@ def feed(request):
     tickets = get_users_viewable_tickets(request.user)
     # returns queryset of tickets
     tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
-    already_reviewed = False
     for ticket in tickets:
         ticket.already_reviewed = False
         for review in reviews:
             if review.ticket == ticket:
-                already_reviewed = True
                 ticket.already_reviewed = True
                 break
-        if already_reviewed:
-            break
 
     # combine and sort the two types of posts
     posts = sorted(
@@ -245,16 +241,27 @@ def disconnect(request):
     logout(request)
     return redirect('reviews:home_page')
 
+def review_in_response_to_ticket(request):
+    '''View which managed a review created from a ticket.'''
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        pass
 
-class ReviewInResponseToTicket(TemplateView):
-    template_name = 'review/response_review.html'
-    def get_context_data(self,*args, **kwargs):
-        context = super(
-            ReviewInResponseToTicket,
-            self).get_context_data(*args,**kwargs)
-        reviews = get_users_viewable_reviews(self.request.user)
-        context['reviews'] = reviews
-        return context
+    else:
+        feed(request)
+
+
+
+
+# class ReviewInResponseToTicket(TemplateView):
+#     template_name = 'review/response_review.html'
+#     def get_context_data(self,*args, **kwargs):
+#         context = super(
+#             ReviewInResponseToTicket,
+#             self).get_context_data(*args,**kwargs)
+#         reviews = get_users_viewable_reviews(self.request.user)
+#         context['reviews'] = reviews
+#         return context
 
 
 # class FeedView(generic.ListView):

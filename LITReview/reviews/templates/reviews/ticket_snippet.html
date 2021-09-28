@@ -33,7 +33,7 @@
                 {% csrf_token %}
                 <div>
                     <p>
-                        <input type="submit" value="Créer une critique">
+                        <input type="submit" value="Créer une critique" name={{post.pk}}>
                     </p>
                 </div>
             </form>
