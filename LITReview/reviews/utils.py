@@ -25,6 +25,10 @@ def get_users_by_name(username: str):
     return User.objects.filter(username=username)
 
 
+def get_ticket_by_pk(pk: str):
+    return Ticket.objects.filter(pk=pk)
+
+
 def username_exists(username):
     if User.objects.filter(username=username).exists():
         return True

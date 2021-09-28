@@ -24,7 +24,8 @@ from .utils import (
     get_users_viewable_reviews,
     get_users_viewable_tickets,
     username_exists,
-    check_password_confirmation
+    check_password_confirmation,
+    get_ticket_by_pk
 )
 
 
@@ -179,6 +180,19 @@ def ask_for_review(request):
     return render(request, 'reviews/ask_for_review.html', {'form': form})
 
 
+@login_required(login_url='reviews:home_page')
+def review_in_response_to_ticket(request):
+    '''View which managed a review created from a ticket.'''
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        if 'post_pk' in request.POST:
+            pk = request.POST.get('post_pk')
+            ticket = get_ticket_by_pk(pk)
+
+    else:
+        feed(request)
+
+
 ##############
 # Posts page #
 ##############
@@ -240,15 +254,6 @@ def disconnect(request):
     '''Function used to log out the current user.'''
     logout(request)
     return redirect('reviews:home_page')
-
-def review_in_response_to_ticket(request):
-    '''View which managed a review created from a ticket.'''
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        pass
-
-    else:
-        feed(request)
 
 
 
