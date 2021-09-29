@@ -22,7 +22,8 @@ from .utils import (
     get_users_viewable_reviews,
     get_users_viewable_tickets,
     username_exists,
-    check_password_confirmation
+    check_password_confirmation,
+    get_ticket_by_pk
 )
 
 
@@ -102,16 +103,12 @@ def feed(request):
     tickets = get_users_viewable_tickets(request.user)
     # returns queryset of tickets
     tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
-    already_reviewed = False
     for ticket in tickets:
         ticket.already_reviewed = False
         for review in reviews:
             if review.ticket == ticket:
-                already_reviewed = True
                 ticket.already_reviewed = True
                 break
-        if already_reviewed:
-            break
 
     # combine and sort the two types of posts
     posts = sorted(
@@ -126,11 +123,12 @@ def feed(request):
     # Check if there is message to display
     if request.session.get('ask_for_review') == 'save_new_ticket':
         context['message']= 'save_new_ticket'
+
     return render(request, 'reviews/feed.html', context=context)
 
 
 @login_required(login_url='reviews:home_page')
-def create_review(request):
+def create_review(request, ticket=None):
     '''View used to write a new review.'''
 
     # if this is a POST request we need to process the form data
@@ -179,6 +177,21 @@ def ask_for_review(request):
         form = AskForReview()
 
     return render(request, 'reviews/ask_for_review.html', {'form': form})
+
+
+@login_required(login_url='reviews:home_page')
+def review_in_response_to_ticket(request):
+    '''View which managed a review created from a ticket.'''
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        if 'post_pk' in request.POST:
+            pk = request.POST.get('post_pk')
+            ticket = get_ticket_by_pk(pk)
+            request.session['ticket'] = ticket
+            return redirect('reviews:create_review', ticket=ticket)
+    else:
+        return redirect('reviews:feed')
+
 
 
 ##############

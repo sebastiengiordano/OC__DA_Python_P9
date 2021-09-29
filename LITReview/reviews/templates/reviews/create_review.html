@@ -23,8 +23,8 @@
         <div class="review_page">
             <div class="review_page_format">
 
-                {% if post %}
-                    {% include 'reviews/ticket_snippet.html' with post=post%}
+                {% if ticket %}
+                    {% include 'reviews/ticket_snippet.html' with post=ticket%}
                 {% else %}
 
                     <div class="review_page_section_title">
