@@ -39,7 +39,11 @@ html {
 }
 
 body {
-    background: url('../img/background.jpg');
+    background: url('../img/background.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: chocolate;
     background-repeat: round;
@@ -317,11 +321,12 @@ nav a:hover {
     color: chocolate;
 }
 
-.description, .commentary {
+.description, .body {
     width: 92%;
     height: 200px;
     padding: 0 2%;
     color: black;
+    margin-top: 7%;
     margin-bottom: 6%;
 }
 
@@ -397,6 +402,7 @@ input#id_rating {
     margin: 0;
     min-width: 75%;
     max-width: 80%;
+    height: 15px;
     justify-content: space-around;
     text-align: center;
     color: chocolate;
@@ -448,7 +454,7 @@ input#id_rating {
 .information{
     display: flex;
     position: relative;
-    margin: 0 30% 20%;
+    margin: 0 30% 35%;
     font-size: 2em;
     font-weight: bold;
     justify-content: space-around;
@@ -493,7 +499,7 @@ table, th, td {
 
 footer {
     display: block;
-    position: relative;
+    position: absolute;
     bottom: 0;
     background:bisque;
     border-top: 2px solid black;
@@ -505,7 +511,7 @@ footer {
 
 .footer {
     display: block;
-    position: absolute;
+    position: relative;
     bottom: 0;
     background:bisque;
     border-top: 2px solid black;
@@ -527,13 +533,13 @@ footer {
 /* Widget */
 /**********/
 
-input[type=text], input[type=password], #id_description {
+input[type=text], input[type=password], #id_description, #id_body {
     background-color:bisque;
     border: 1px solid chocolate;
-    padding: 10px 70px;
+    padding: 10px 30px;
     margin: 4px 2px;
     cursor: text;
-    font-size: medium;
+    font-size: 1em;
     text-decoration: none;
     text-align: justify;
     text-indent: 10px;
@@ -584,7 +590,7 @@ button a{
 
 .errorlist{
     color: red;
-    font-size: small;
+    font-size: medium;
     list-style-type: none;
     margin: 10px 0 0;
     padding: 0;

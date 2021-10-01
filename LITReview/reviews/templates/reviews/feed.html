@@ -6,10 +6,19 @@
     {% comment %}
         This message appears if a ticket has been created.
     {% endcomment %}
-    {% if  message == 'save_new_ticket' %}
+    {% if message == 'save_new_ticket' %}
         <div class="message">
             <p>
-                Votre ticket a été créé.
+                Votre nouveau ticket a été créé.
+            </p>
+        </div>
+    {% comment %}
+        This message appears if a reveiw has been created.
+    {% endcomment %}
+    {% elif message == 'save_new_review' %}
+        <div class="message">
+            <p>
+                Votre nouvelle critique a été créé.
             </p>
         </div>
     {% endif %}
@@ -22,14 +31,14 @@
             <div class="in_line">
                 <div class="wrap_button">
                     <p>
-                        <button type="button">
+                        <button type="button" class="input_button">
                             <a href="{% url 'reviews:ask_for_review' %}">Demander une critique</a>
                         </button>
                     </p>
                 </div>
                 <div class="wrap_button">
                     <p>
-                        <button type="button">
+                        <button type="button" class="input_button">
                             <a href="{% url 'reviews:create_review' %}">Créer une critique</a>
                         </button>
                     </p>
@@ -44,11 +53,12 @@
     {% if posts|length > 0 %}
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'reviews/ticket_snippet.html' with post=post%}
+                {% include 'reviews/ticket_snippet.html' with post=post %}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'reviews/review_snippet.html' with post=post%}
+                {% include 'reviews/review_snippet.html' with post=post %}
             {% endif %}
         {% endfor %}
+
     {% else %}
         <div class="information">
             <p>Aucune critique ou ticket n'a été publié par les personnes que vous suivez.</p>
@@ -56,15 +66,16 @@
     {% endif %}
 
 {% endblock %}
-{% comment %} 
-{% block footer %}
-    <!-- Footer-->
-    <div class="footer">
-        <div class="footer-text">
-            <p>
-            Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
-            </p>
-        </div>
-    </footer>
-{% endblock %}
-{% endcomment %}
+
+{% if posts|length > 1 %}
+    {% block footer %}
+        <!-- Footer-->
+        <div class="footer">
+            <div class="footer-text">
+                <p>
+                Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+                </p>
+            </div>
+        </footer>
+    {% endblock %}
+{% endif %}

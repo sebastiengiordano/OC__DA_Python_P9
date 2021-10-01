@@ -38,7 +38,7 @@ class RegistrationForm(forms.Form):
 
 
 class CreateReview(forms.Form):
-    book_article_title = forms.CharField(
+    title = forms.CharField(
         label="Titre",
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'review_page_form_title'}),
@@ -47,7 +47,7 @@ class CreateReview(forms.Form):
     description = forms.CharField(
         label="Description",
         min_length=10, max_length=2500,
-        widget=forms.TextInput(attrs={'class': 'description'}),
+        widget=forms.Textarea(),
         error_messages={
             'required': 'Merci de renseigner '
             'la description de votre livre ou article.'}
@@ -56,7 +56,7 @@ class CreateReview(forms.Form):
         label="Image",
         required=False
         )
-    review_title = forms.CharField(
+    headline = forms.CharField(
         label="Titre",
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'review_page_form_title'}),
@@ -64,19 +64,23 @@ class CreateReview(forms.Form):
         )
     rating = forms.ChoiceField(
         label="Note",
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'rating'}),
-        choices=[(str(x), str(x)) for x in range(6)]
+        widget=forms.RadioSelect(attrs={'class': 'rating'}),
+        choices=[(str(x), x) for x in range(6)],
+        error_messages={
+            'required': 'Merci de donner une note.'
+            }
         )
-    commentary = forms.CharField(
+    body = forms.CharField(
         label="Commentaire",        
         min_length=10, max_length=2500,
-        widget=forms.TextInput(attrs={'class': 'commentary'}),
+        widget=forms.Textarea(),
         error_messages={'required': 'Merci de mettre un commentaire.'}
         )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.label_suffix = ""  # Removes : as label suffix
+        # Remove colons on all field labels
+        self.label_suffix = ""
 
 
 class AskForReview(forms.Form):

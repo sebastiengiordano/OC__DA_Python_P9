@@ -24,7 +24,8 @@
             <div class="review_page_format">
 
                 {% if ticket %}
-                    {% include 'reviews/ticket_snippet.html' with post=ticket%}
+                    {% include 'reviews/ticket_snippet.html' with post=ticket %}
+                    <input type="hidden" name="ticket_pk" value={{ticket.pk}} >
                 {% else %}
 
                     <div class="review_page_section_title">
@@ -33,9 +34,9 @@
                         </p>
                     </div>
                     <div class="review_page_form_title">
-                        {{ form.book_article_title.errors }}
-                        <label class="review_page_form_label" for="{{ form.book_article_title.id_for_label }}">Titre</label>
-                        {{ form.book_article_title }}
+                        {{ form.title.errors }}
+                        <label class="review_page_form_label" for="{{ form.title.id_for_label }}">Titre</label>
+                        {{ form.title }}
                     </div>
                     <div class="description">
                         {{ form.description.errors }}
@@ -65,19 +66,19 @@
                 </p>
             </div>
             <div class="review_page_form_title">
-                {{ form.review_title.errors }}
-                <label class="review_page_form_label" for="{{ form.review_title.id_for_label }}">Titre</label>
-                {{ form.review_title }}
+                {{ form.headline.errors }}
+                <label class="review_page_form_label" for="{{ form.headline.id_for_label }}">Titre</label>
+                {{ form.headline }}
             </div>
             <div class="review_page_form_title">
                 {{ form.rating.errors }}
                 <label class="review_page_form_label" for="{{ form.rating.id_for_label }}">Note</label>
                 {{ form.rating }}
             </div>
-            <div class="commentary">
-                {{ form.commentary.errors }}
-                <label class="review_page_form_label" for="{{ form.commentary.id_for_label }}">Commentaire</label>
-                {{ form.commentary }}
+            <div class="body">
+                {{ form.body.errors }}
+                <label class="review_page_form_label" for="{{ form.body.id_for_label }}">Commentaire</label>
+                {{ form.body }}
             </div>
             <div class="review_wrap_button_bottom">
                 <p>
@@ -87,4 +88,15 @@
         </div>
     </form>
 
+{% endblock %}
+
+{% block footer %}
+    <!-- Footer-->
+    <div class="footer">
+        <div class="footer-text">
+            <p>
+            Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+            </p>
+        </div>
+    </footer>
 {% endblock %}

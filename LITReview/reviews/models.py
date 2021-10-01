@@ -45,11 +45,3 @@ class UserFollows(models.Model):
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
         unique_together = ('user', 'followed_user', )
-
-
-# class User(models.User):
-#     user_name = models.CharField(max_length=30)
-
-
-# class UserManager(models.UserManager):
-#     pass

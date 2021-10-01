@@ -23,7 +23,9 @@ from .utils import (
     get_users_viewable_tickets,
     username_exists,
     check_password_confirmation,
-    get_ticket_by_pk
+    get_ticket_by_pk,
+    save_ticket,
+    save_review
 )
 
 
@@ -120,9 +122,16 @@ def feed(request):
     # Update context
     context = {}
     context['posts'] = posts
+    context['username'] = request.user.username
     # Check if there is message to display
-    if request.session.get('ask_for_review') == 'save_new_ticket':
-        context['message']= 'save_new_ticket'
+    message_to_display = request.session.get('message_to_display')
+    if message_to_display:
+        if message_to_display == 'save_new_ticket':
+            context['message']= 'save_new_ticket'
+        elif message_to_display == 'save_new_review':
+            context['message']= 'save_new_review'
+
+        del request.session['message_to_display']
 
     return render(request, 'reviews/feed.html', context=context)
 
@@ -133,20 +142,31 @@ def create_review(request, ticket=None):
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # create a form instance and
+        # populate it with data from the request:
         form = CreateReview(request.POST)
         # check whether it's valid:
         if form.is_valid():
+            save_review(request, form)
+            request.session['create_review'] = 'save_new_review'
             return redirect('reviews:feed')
-        else:
-            form = CreateReview()
-
 
     # if a GET (or any other method) we'll create a blank form
     else:
+        # check if this request come from a response to a ticket 
+        if 'ticket_pk' in request.GET:
+            pk = request.GET.get('ticket_pk')
+            ticket = get_ticket_by_pk(pk)[0]
+            ticket.already_reviewed = True
+        # create a form instance
         form = CreateReview()
 
-    return render(request, 'reviews/create_review.html', {'form': form})
+    # Update context
+    context = {}
+    context['form'] = form
+    context['ticket'] = ticket
+
+    return render(request, 'reviews/create_review.html', context=context)
 
 
 @login_required(login_url='reviews:home_page')
@@ -158,17 +178,7 @@ def ask_for_review(request):
         form = AskForReview(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            ticket = Ticket()
-            ticket.title = form.cleaned_data["title"]
-            ticket.description = form.cleaned_data["description"]
-            ticket.user = request.user
-            ticket.image = request.FILES.get('image_download', None)
-            ticket.save()
-            # if image_download == "Télécharger fichier":
-            #     # Add image file management
-            #     RAISE_ERROR
-            # else:
-                # Save the review request
+            save_ticket(request, form)
             request.session['ask_for_review'] = 'save_new_ticket'
             return redirect('reviews:feed')
 
@@ -177,21 +187,6 @@ def ask_for_review(request):
         form = AskForReview()
 
     return render(request, 'reviews/ask_for_review.html', {'form': form})
-
-
-@login_required(login_url='reviews:home_page')
-def review_in_response_to_ticket(request):
-    '''View which managed a review created from a ticket.'''
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        if 'post_pk' in request.POST:
-            pk = request.POST.get('post_pk')
-            ticket = get_ticket_by_pk(pk)
-            request.session['ticket'] = ticket
-            return redirect('reviews:create_review', ticket=ticket)
-    else:
-        return redirect('reviews:feed')
-
 
 
 ##############

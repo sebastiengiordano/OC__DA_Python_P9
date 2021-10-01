@@ -5,7 +5,11 @@
     <div class="ticket_snippet_header">
 
         <div class="snippet_user_request">
-            <label>{{post.user.username}} a demandé une critique</label>
+            {% if username == {{post.user.username}} %}
+                <label>Vous avez demandé une critique</label>
+            {% else %}
+                <label>{{post.user.username}} a demandé une critique</label>
+            {% endif %}
         </div>
 
         <div class="snippet_date">
@@ -29,14 +33,14 @@
 
     {% if not post.already_reviewed %}
         <div class="feed_create_review_wrap_button">
-            <form class="form-signin" method="POST" action="{% url 'reviews:review_response' %}">
+            <form action="{% url 'reviews:create_review' %}" method="GET">
                 {% csrf_token %}
                 <div>
                     <p>
                         <input type="submit" value="Créer une critique">
                     </p>
                 </div>
-                <input type="hidden" name="post_pk" value={{post.pk}} >
+                <input type="hidden" name="ticket_pk" value={{post.pk}} >
             </form>
         </div>
     {% endif %}
