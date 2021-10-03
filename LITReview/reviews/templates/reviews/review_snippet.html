@@ -1,31 +1,15 @@
-<div class="review_snippet_header">
-    <div class="snippet_user_request">
-        <label>Vous avez publié une critique</label>
-    </div>
-</div>
-
-<div class="snippet_title">
-    {{post.title}}
-</div>
-
-<div class="snippet_description">
-    {{post.description}}
-</div>
-
-{% if post.image %}
-    <div class="ticket_snippet_image">
-        <img src=post.image.url>
-    </div>
-{% endif %}
-
 {% load static %}
 
 <div class="snippet_body">
 
-    <div class="ticket_snippet_header">
+    <div class="snippet_header">
 
-        <div class="snippet_user_request">
-            <label>{{post.user.username}} a publié une critique</label>
+        <div class="snippet_user">
+            {% if user.get_username == post.user.username %}
+                <label>Vous avez publié une critique</label>
+            {% else %}
+                <label>{{post.user.username}} a publié une critique</label>
+            {% endif %}
         </div>
 
         <div class="snippet_date">
@@ -34,30 +18,34 @@
     </div>
 
     <div class="snippet_title">
-        {{post.title}}
+        {{post.headline}} -
     </div>
 
     <div class="snippet_description">
-        {{post.description}}
+        {{post.body}}
     </div>
 
-    {% if post.image %}
-        <div class="ticket_snippet_image">
-            <img src="{% static post.image.url %}">
-        </div>
-    {% endif %}
+    
+    <div class="include_snippet_body">
 
-    {% if not post.already_reviewed %}
-        <div class="feed_create_review_wrap_button">
-            <form action="{% url 'reviews:create_review' %}" method="GET">
-                {% csrf_token %}
-                <div>
-                    <p>
-                        <input type="submit" value="Créer une critique">
-                    </p>
-                </div>
-                <input type="hidden" name="ticket_pk" value={{post.pk}} >
-            </form>
+        <div class="snippet_header">
+            <div class="snippet_user">
+                <label>Ticket - {{post.user.username}}</label>
+            </div>
         </div>
-    {% endif %}
+
+        <div class="snippet_title">
+            {{post.title}}
+        </div>
+
+        <div class="snippet_description">
+            {{post.description}}
+        </div>
+
+        {% if post.image %}
+            <div class="snippet_image">
+                <img src="{% static post.image.url %}">
+            </div>
+        {% endif %}
+    </div>
 </div>

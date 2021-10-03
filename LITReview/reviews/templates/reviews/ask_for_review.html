@@ -6,7 +6,7 @@
     <div class="review_page">
         <form action="{% url 'reviews:ask_for_review' %}" enctype="multipart/form-data" method="post">
             {% csrf_token %}
-            <div class="review_page_format">
+            <div>
                 <div class="review_header_wrap">
                     <div class="review_header">
                         <p>
@@ -46,4 +46,15 @@
         </form>
     </div>
 
+{% endblock %}
+
+{% block footer %}
+    <!-- Footer-->
+    <div class="footer">
+        <div class="footer-text">
+            <p>
+            Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+            </p>
+        </div>
+    </footer>
 {% endblock %}

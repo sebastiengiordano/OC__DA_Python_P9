@@ -1,16 +1,12 @@
 from itertools import chain
-from django.http.request import RAISE_ERROR
 
-# from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-# from django.urls import reverse
-from django.views import generic
+from django.shortcuts import render, redirect
 from django.db.models import CharField, Value
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import Review, Ticket, UserFollows
+from .models import UserFollows
 from .forms import (
     ConnectionForm,
     RegistrationForm,
@@ -122,7 +118,6 @@ def feed(request):
     # Update context
     context = {}
     context['posts'] = posts
-    context['username'] = request.user.username
     # Check if there is message to display
     message_to_display = request.session.get('message_to_display')
     if message_to_display:
@@ -153,7 +148,7 @@ def create_review(request, ticket=None):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        # check if this request come from a response to a ticket 
+        # check if this request come from a response to a ticket
         if 'ticket_pk' in request.GET:
             pk = request.GET.get('ticket_pk')
             ticket = get_ticket_by_pk(pk)[0]

@@ -21,7 +21,7 @@
     <form action="{% url 'reviews:create_review' %}" method="post">
         {% csrf_token %}
         <div class="review_page">
-            <div class="review_page_format">
+            <div>
 
                 {% if ticket %}
                     {% include 'reviews/ticket_snippet.html' with post=ticket %}

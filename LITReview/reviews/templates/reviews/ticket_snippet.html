@@ -2,10 +2,10 @@
 
 <div class="snippet_body">
 
-    <div class="ticket_snippet_header">
+    <div class="snippet_header">
 
-        <div class="snippet_user_request">
-            {% if username == {{post.user.username}} %}
+        <div class="snippet_user">
+            {% if user.get_username == post.user.username %}
                 <label>Vous avez demandé une critique</label>
             {% else %}
                 <label>{{post.user.username}} a demandé une critique</label>
@@ -26,12 +26,12 @@
     </div>
 
     {% if post.image %}
-        <div class="ticket_snippet_image">
+        <div class="snippet_image">
             <img src="{% static post.image.url %}">
         </div>
     {% endif %}
 
-    {% if not post.already_reviewed %}
+    {% if not post.already_reviewed and not user.get_username == post.user.username %}
         <div class="feed_create_review_wrap_button">
             <form action="{% url 'reviews:create_review' %}" method="GET">
                 {% csrf_token %}

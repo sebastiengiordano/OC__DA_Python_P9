@@ -214,17 +214,16 @@ nav a:hover {
 /* snippet */
 /***********/
 
-.snippet_body{
-    margin: 10px;
-    padding: 20px;
-    display: flexbox;
+.snippet_body, .include_snippet_body{
+    margin: 50px;
+    padding: 30px;
     flex-direction: row;
     flex-wrap: wrap;
     border: 3px solid chocolate;
     font-size: x-large;
 }
 
-.review_snippet_header, .ticket_snippet_header{
+.snippet_header{
     width: 100%;
     min-height: 40px;
     padding: 0;
@@ -232,7 +231,7 @@ nav a:hover {
     display: flex;
 }
 
-.snippet_user_request{
+.snippet_user{
     width: 70%;
     min-height: 30px;
     padding: 0 2%;
@@ -261,7 +260,7 @@ nav a:hover {
     margin-bottom: 2%;
 }
 
-.ticket_snippet_image{
+.snippet_image{
     
 }
 
@@ -299,12 +298,6 @@ nav a:hover {
 
 .review_header_wrap{
     text-align: center;
-}
-
-.review_page_format{
-    /* border: 1px solid chocolate;
-    box-shadow: 10px 5px 5px chocolate;
-    padding: 0px; */
 }
 
 .review_page_form_title{
@@ -544,7 +537,7 @@ input[type=text], input[type=password], #id_description, #id_body {
     text-align: justify;
     text-indent: 10px;
     white-space:normal;
-    width: 92%;
+    width: 100%;
 }
 
 input[type=button], input[type=submit], input[type=file], .input_button {
