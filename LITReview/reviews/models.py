@@ -16,7 +16,7 @@ class Ticket(models.Model):
         on_delete=models.CASCADE)
     image = models.ImageField(
         null=True, blank=True,
-        upload_to='reviews/static/pictures',
+        upload_to='LITReview/reviews/static/pictures',
         default = 'pictures/no-img.jpg')
     time_created = models.DateTimeField(auto_now_add=True)
 
