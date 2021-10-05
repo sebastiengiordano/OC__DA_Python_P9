@@ -1,11 +1,25 @@
+from itertools import chain
+
 from django.contrib.auth.models import User
 from django import forms
 
-from .models import Review, Ticket
+from .models import Review, Ticket, UserFollows
 
 
 def get_users_viewable_reviews(user: User):
-    return Review.objects.filter(user__username=user.username)
+    # Get it own reviews
+    user_reviews = Review.objects.filter(user__username=user.username)
+    # Get reviews of followed users
+    users_follows = UserFollows.objects.filter(user__username=user.username)
+    followers_reviews = Review.objects.none()
+    for user_follows in users_follows:
+        user_follows_review = Review.objects.filter(
+            user__username=user_follows.followed_user.username)
+        followers_reviews = chain(followers_reviews, user_follows_review)
+    # Merge all reviews
+    reviews = chain(user_reviews, followers_reviews)
+
+    return reviews
 
 
 def get_users_viewable_tickets(user: User):
