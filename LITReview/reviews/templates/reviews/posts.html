@@ -4,18 +4,38 @@
 
 {% block content %}
 
-    {% if posts.count > 0 %}
+    {% comment %}
+        Display posts.
+    {% endcomment %}
+    {% if posts|length > 0 %}
+
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'ticket_snippet.html' %}
+                {% include 'reviews/ticket_snippet.html' with post=post %}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'review_snippet.html' %}
+                {% include 'reviews/review_snippet.html' with post=post %}
             {% endif %}
         {% endfor %}
+
     {% else %}
+
         <div class="information">
             <p>Votre fil d'actualité est vide.</p>
         </div>
+
     {% endif %}
 
 {% endblock %}
+
+{% if posts|length > 1 %}
+    {% block footer %}
+        <!-- Footer-->
+        <div class="footer">
+            <div class="footer-text">
+                <p>
+                Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+                </p>
+            </div>
+        </footer>
+    {% endblock %}
+{% endif %}
