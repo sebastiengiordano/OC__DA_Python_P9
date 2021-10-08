@@ -21,14 +21,12 @@ urlpatterns = [
     # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     # path('<int:question_id>/vote/', views.vote, name='vote'),
-    # re_path(r'^media/(?P<path>.*)$', serve, {
-    #         'document_root': settings.MEDIA_ROOT,
-    #     }),
+    re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
 ]
 # Serving the media files in development mode
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    urlpatterns += staticfiles_urlpatterns()
-
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + staticfiles_urlpatterns()
+# else:
 urlpatterns += staticfiles_urlpatterns()
