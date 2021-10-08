@@ -12,6 +12,20 @@ def get_users_viewable_reviews(user: User):
     user_reviews = Review.objects.filter(user__username=user.username)
     user_reviews = user_reviews.annotate(
         content_type=Value('REVIEW', CharField()))
+
+    return user_reviews
+
+
+def get_users_viewable_tickets(user: User):
+    # Get it own tickets
+    user_tickets = Ticket.objects.filter(user__username=user.username)
+    user_tickets = user_tickets.annotate(
+        content_type=Value('TICKET', CharField()))
+
+    return user_tickets
+
+
+def get_followed_users_viewable_reviews(user: User):
     # Get reviews of followed users
     users_follows = UserFollows.objects.filter(user__username=user.username)
     followers_reviews = Review.objects.none()
@@ -21,17 +35,11 @@ def get_users_viewable_reviews(user: User):
         followers_reviews = chain(followers_reviews, user_follows_review)
         user_follows_review = user_follows_review.annotate(
             content_type=Value('REVIEW', CharField()))
-    # Merge all reviews
-    reviews = list(chain(user_reviews, followers_reviews))
 
-    return reviews
+    return followers_reviews
 
 
-def get_users_viewable_tickets(user: User):
-    # Get it own tickets
-    user_tickets = Ticket.objects.filter(user__username=user.username)
-    user_tickets = user_tickets.annotate(
-        content_type=Value('TICKET', CharField()))
+def get_followed_viewable_tickets(user: User):
     # Get tickets of followed users
     users_follows = UserFollows.objects.filter(user__username=user.username)
     followers_tickets = Ticket.objects.none()
@@ -41,10 +49,8 @@ def get_users_viewable_tickets(user: User):
         followers_tickets = chain(followers_tickets, user_follows_ticket)
         user_follows_ticket = user_follows_ticket.annotate(
             content_type=Value('TICKET', CharField()))
-    # Merge all tickets
-    tickets = list(chain(user_tickets, followers_tickets))
 
-    return tickets
+    return followers_tickets
 
 
 def get_users_subscriptions(user: User):
@@ -86,18 +92,15 @@ def check_password_confirmation(form: forms):
         return False
 
 
-def create_ticket(request, form: forms):
+
+def save_ticket(request, form: forms):
     ticket = Ticket()
     ticket.title = form.cleaned_data["title"]
     ticket.description = form.cleaned_data["description"]
     ticket.user = request.user
     ticket.image = request.FILES.get('image_download', None)
-    return ticket
-
-
-def save_ticket(request, form: forms):
-    ticket = create_ticket(request, form)
     ticket.save()
+    return ticket
 
 
 def save_review(request, form: forms):
@@ -106,8 +109,7 @@ def save_review(request, form: forms):
         review.ticket = get_ticket_by_pk(form.ticket_pk)[0]
         review.ticket.already_reviewed = True
     else:
-        review.ticket = create_ticket(request, form)
-        review.ticket.save()
+        review.ticket = save_ticket(request, form)
     review.rating = form.cleaned_data["rating"]
     review.headline = form.cleaned_data["headline"]
     review.body = form.cleaned_data["body"]
