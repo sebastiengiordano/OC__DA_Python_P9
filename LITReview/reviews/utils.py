@@ -103,8 +103,8 @@ def save_ticket(request, form: forms):
 def save_review(request, form: forms):
     review = Review()
     if hasattr(form, 'ticket_pk'):
-        ticket = get_ticket_by_pk(form.ticket_pk)[0]
-        ticket.already_reviewed = True
+        review.ticket = get_ticket_by_pk(form.ticket_pk)[0]
+        review.ticket.already_reviewed = True
     else:
         review.ticket = create_ticket(request, form)
         review.ticket.save()

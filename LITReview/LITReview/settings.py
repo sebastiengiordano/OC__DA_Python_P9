@@ -64,7 +64,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
             ],
         },
     },
@@ -130,3 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files (Users Images)
 MEDIA_ROOT = os_path_join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    os_path_join(BASE_DIR,'staticfiles'),
+    os_path_join(BASE_DIR, 'media'),
+]

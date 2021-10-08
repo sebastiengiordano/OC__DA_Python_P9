@@ -35,16 +35,16 @@
         </div>
 
         <div class="snippet_title">
-            {{post.title}}
+            {{post.ticket.title}}
         </div>
 
         <div class="snippet_description">
-            {{post.description}}
+            {{post.ticket.description}}
         </div>
 
-        {% if post.image %}
+        {% if post.ticket.image %}
             <div class="snippet_image">
-                <img src="{% static post.image.url %}">
+                <img src="{{ post.ticket.image.url }}">
             </div>
         {% endif %}
     </div>

@@ -2,7 +2,6 @@ from distutils.command.upload import upload
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 
 
 class Ticket(models.Model):
