@@ -142,7 +142,7 @@ def create_review(request, ticket=None):
         # check whether it's valid:
         if form.is_valid():
             save_review(request, form)
-            request.session['create_review'] = 'save_new_review'
+            request.session['message_to_display'] = 'save_new_review'
             return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form
@@ -173,7 +173,7 @@ def ask_for_review(request):
         # check whether it's valid:
         if form.is_valid():
             save_ticket(request, form)
-            request.session['ask_for_review'] = 'save_new_ticket'
+            request.session['message_to_display'] = 'save_new_ticket'
             return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form

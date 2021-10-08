@@ -86,28 +86,24 @@ def check_password_confirmation(form: forms):
         return False
 
 
-def create_ticket(request, form: forms):
+
+def save_ticket(request, form: forms):
     ticket = Ticket()
     ticket.title = form.cleaned_data["title"]
     ticket.description = form.cleaned_data["description"]
     ticket.user = request.user
     ticket.image = request.FILES.get('image_download', None)
-    return ticket
-
-
-def save_ticket(request, form: forms):
-    ticket = create_ticket(request, form)
     ticket.save()
+    return ticket
 
 
 def save_review(request, form: forms):
     review = Review()
     if hasattr(form, 'ticket_pk'):
-        ticket = get_ticket_by_pk(form.ticket_pk)[0]
-        ticket.already_reviewed = True
+        review.ticket = get_ticket_by_pk(form.ticket_pk)[0]
+        review.ticket.already_reviewed = True
     else:
-        review.ticket = create_ticket(request, form)
-        review.ticket.save()
+        review.ticket = save_ticket(request, form)
     review.rating = form.cleaned_data["rating"]
     review.headline = form.cleaned_data["headline"]
     review.body = form.cleaned_data["body"]
