@@ -94,13 +94,12 @@ def get_registration_data(request):
 @login_required(login_url='reviews:home_page')
 def feed(request):
     '''View which manage the feed page.'''
+    # Get queryset of reviews
     reviews = get_users_viewable_reviews(request.user)
-    # returns queryset of reviews
-    reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
+    # Get queryset of tickets
     tickets = get_users_viewable_tickets(request.user)
-    # returns queryset of tickets
-    tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+    # For each ticket, check if it has been reviewed by user
     for ticket in tickets:
         ticket.already_reviewed = False
         for review in reviews:
@@ -122,9 +121,9 @@ def feed(request):
     message_to_display = request.session.get('message_to_display')
     if message_to_display:
         if message_to_display == 'save_new_ticket':
-            context['message']= 'save_new_ticket'
+            context['message'] = 'save_new_ticket'
         elif message_to_display == 'save_new_review':
-            context['message']= 'save_new_review'
+            context['message'] = 'save_new_review'
 
         del request.session['message_to_display']
 
