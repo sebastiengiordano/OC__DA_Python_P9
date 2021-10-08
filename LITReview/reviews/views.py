@@ -126,7 +126,6 @@ def feed(request):
             context['message'] = 'save_new_review'
 
         del request.session['message_to_display']
-
     return render(request, 'reviews/feed.html', context=context)
 
 
@@ -189,13 +188,11 @@ def ask_for_review(request):
 @login_required(login_url='reviews:home_page')
 def posts(request):
     '''View which manage the posts page.'''
+    # Get queryset of reviews
     reviews = get_users_viewable_reviews(request.user)
-    # returns queryset of reviews
-    reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
+    # Get queryset of tickets
     tickets = get_users_viewable_tickets(request.user)
-    # returns queryset of tickets
-    tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
     # combine and sort the two types of posts
     posts = sorted(

@@ -51,6 +51,7 @@
         Display feed.
     {% endcomment %}
     {% if posts|length > 0 %}
+
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
                 {% include 'reviews/ticket_snippet.html' with post=post %}
@@ -60,9 +61,11 @@
         {% endfor %}
 
     {% else %}
+
         <div class="information">
             <p>Aucune critique ou ticket n'a été publié par les personnes que vous suivez.</p>
         </div>
+
     {% endif %}
 
 {% endblock %}

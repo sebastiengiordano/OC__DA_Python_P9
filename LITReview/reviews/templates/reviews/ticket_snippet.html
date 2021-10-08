@@ -27,7 +27,7 @@
 
     {% if post.image %}
         <div class="snippet_image">
-            <img src="{% static post.image.url %}">
+            <img src={{post.image.url}}>
         </div>
     {% endif %}
 
