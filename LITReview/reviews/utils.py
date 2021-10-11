@@ -36,7 +36,7 @@ def get_followed_users_viewable_reviews(user: User):
     return followers_reviews
 
 
-def get_followed_viewable_tickets(user: User):
+def get_followed_users_viewable_tickets(user: User):
     # Get tickets of followed users
     users_follow = UserFollows.objects.filter(user__username=user.username)
     followers_tickets = Ticket.objects.none()
@@ -50,22 +50,20 @@ def get_followed_viewable_tickets(user: User):
 
 
 def get_users_subscriptions(user: User):
-    # Get all users followed by user
-    users_follow = UserFollows.objects.all()
+    # Get the list of all users followed by user
+    users_follow = UserFollows.objects.filter(user=user)
     followed = []
     for user_follow in users_follow:
-        if user_follow.user == user:
-            followed.append(user_follow.followed_user)
+        followed.append(user_follow.followed_user)
     return followed
 
 
 def get_users_subscribers(user: User):
-    # Get all users which follow the user
-    users_follow = UserFollows.objects.all()
+    # Get the list of all users which follow the user
+    users_follow = UserFollows.objects.filter(followed_user=user)
     followers = []
     for user_follow in users_follow:
-        if user_follow.followed_user == user:
-            followers.append(user_follow.user)
+        followers.append(user_follow.user)
     return followers
 
 
