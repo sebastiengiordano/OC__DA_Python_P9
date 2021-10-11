@@ -1,26 +1,70 @@
 {% extends 'reviews/base_with_navbar.html' %}
 
 {% block content %}
+    {% comment %}
+        This message appears an user has been added or removed.
+    {% endcomment %}
+    {% if message_to_display %}
+        <div class="message">
+            <p>
+                {{message_to_display}}
+            </p>
+        </div>
+    {% endif %}
 
     <h1>
         <label>Suivre d'autres utilisateurs</label>
     </h1>
+    {% comment %}
+        Search bar.
+    {% endcomment %}
+    <form action="{% url 'reviews:subscription' %}" method="post">
+        {% csrf_token %}
+        <div class="search_area">
+            {{ form.title.errors }}
+            {{ form.username }}
+            <div class="wrap_button_right">
+                <p>
+                    <input type="submit" value="Envoyer" name='users_search'>
+                </p>
+            </div>
+        </div>
+    </form>
 
+    {% if users_search %}
+        <table>
+            {% for user in users_search %}
+                <tr>
+                    <td>{{user.username}}</td>
+                    <td>
+                            <form action="{% url 'reviews:subscription' %}" method="post">
+                            {% csrf_token %}
+                            <input type='submit' value="S'abonner"  name='subscribing'>
+                            <input type="hidden" name="subscribing" value={{user.id}}>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+    {% comment %}
+        Subscribtions.
+    {% endcomment %}
     <h2>
         <label>Abonnements</label>
     </h2>
-    {% if subscribtions.count > 0 %}
+    {% if subscribtions|length > 0 %}
         <table>
-            <tr>
-                <th>Pseudo</th>
-                <th>Supprimer</th>
-            </tr>
             {% for subscribtion in subscribtions %}
                 <tr>
                     <td>{{subscribtion.username}}</td>
                     <td>
-                        <form action='reviews:subscribtion' method='POST'>
-                            <button type='submit' name=subscribtion.id>Se désabonner</button>
+                        <form action="{% url 'reviews:subscription' %}" method="post">
+                            {% csrf_token %}
+                            <input type='submit' value="Se désabonner"  name='unsubscribing'>
+                            <input type="hidden" name="unsubscribing" value={{subscribtion.id}}>
                         </form>
                     </td>
                 </tr>
@@ -32,14 +76,14 @@
         </div>
     {% endif %}
 
+    {% comment %}
+        Subscribers.
+    {% endcomment %}
     <h2>
         <label>Abonnés</label>
     </h2>
-    {% if subscribers.count > 0 %}
+    {% if subscribers|length > 0 %}
         <table>
-            <tr>
-                <th>Pseudo</th>
-            </tr>
             {% for subscriber in subscribers %}
                 <tr>
                     <td>{{subscriber.username}}</td>

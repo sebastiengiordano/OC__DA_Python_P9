@@ -37,7 +37,7 @@ class RegistrationForm(forms.Form):
         )
 
 
-class CreateReview(forms.Form):
+class CreateReviewForm(forms.Form):
     title = forms.CharField(
         label="Titre",
         max_length=100,
@@ -71,7 +71,7 @@ class CreateReview(forms.Form):
             }
         )
     body = forms.CharField(
-        label="Commentaire",        
+        label="Commentaire",
         min_length=10, max_length=2500,
         widget=forms.Textarea(),
         error_messages={'required': 'Merci de mettre un commentaire.'}
@@ -83,7 +83,7 @@ class CreateReview(forms.Form):
         self.label_suffix = ""
 
 
-class AskForReview(forms.Form):
+class AskForReviewForm(forms.Form):
     title = forms.CharField(
         label="Titre",
         max_length=100,
@@ -102,4 +102,13 @@ class AskForReview(forms.Form):
     image_download = forms.ImageField(
         label="Image",
         required=False
+        )
+
+
+class SubscriptionForm(forms.Form):
+    username = forms.CharField(
+        label="",
+        max_length=30,
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Nom d\'utilisateur'})
         )

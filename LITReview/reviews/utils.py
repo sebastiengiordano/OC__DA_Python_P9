@@ -12,7 +12,6 @@ def get_users_viewable_reviews(user: User):
     user_reviews = Review.objects.filter(user__username=user.username)
     user_reviews = user_reviews.annotate(
         content_type=Value('REVIEW', CharField()))
-
     return user_reviews
 
 
@@ -21,47 +20,65 @@ def get_users_viewable_tickets(user: User):
     user_tickets = Ticket.objects.filter(user__username=user.username)
     user_tickets = user_tickets.annotate(
         content_type=Value('TICKET', CharField()))
-
     return user_tickets
 
 
 def get_followed_users_viewable_reviews(user: User):
     # Get reviews of followed users
-    users_follows = UserFollows.objects.filter(user__username=user.username)
+    users_follow = UserFollows.objects.filter(user__username=user.username)
     followers_reviews = Review.objects.none()
-    for user_follows in users_follows:
-        user_follows_review = Review.objects.filter(
-            user__username=user_follows.followed_user.username)
-        followers_reviews = chain(followers_reviews, user_follows_review)
-        user_follows_review = user_follows_review.annotate(
+    for user_follow in users_follow:
+        user_follow_review = Review.objects.filter(
+            user__username=user_follow.followed_user.username)
+        user_follow_review = user_follow_review.annotate(
             content_type=Value('REVIEW', CharField()))
+        followers_reviews = chain(followers_reviews, user_follow_review)
     return followers_reviews
 
 
 def get_followed_viewable_tickets(user: User):
     # Get tickets of followed users
-    users_follows = UserFollows.objects.filter(user__username=user.username)
+    users_follow = UserFollows.objects.filter(user__username=user.username)
     followers_tickets = Ticket.objects.none()
-    for user_follows in users_follows:
-        user_follows_ticket = Ticket.objects.filter(
-            user__username=user_follows.followed_user.username)
-        followers_tickets = chain(followers_tickets, user_follows_ticket)
-        user_follows_ticket = user_follows_ticket.annotate(
+    for user_follow in users_follow:
+        user_follow_ticket = Ticket.objects.filter(
+            user__username=user_follow.followed_user.username)
+        user_follow_ticket = user_follow_ticket.annotate(
             content_type=Value('TICKET', CharField()))
-
+        followers_tickets = chain(followers_tickets, user_follow_ticket)
     return followers_tickets
 
 
 def get_users_subscriptions(user: User):
-    return user.following.all()
+    # Get all users followed by user
+    users_follow = UserFollows.objects.all()
+    followed = []
+    for user_follow in users_follow:
+        if user_follow.user == user:
+            followed.append(user_follow.followed_user)
+    return followed
 
 
 def get_users_subscribers(user: User):
-    return user.followed_by.all()
+    # Get all users which follow the user
+    users_follow = UserFollows.objects.all()
+    followers = []
+    for user_follow in users_follow:
+        if user_follow.followed_user == user:
+            followers.append(user_follow.user)
+    return followers
+
+
+def get_user_by_id(id: str):
+    return User.objects.filter(id=id)
+
+
+def get_user_by_name(username: str):
+    return User.objects.filter(username=username)
 
 
 def get_users_by_name(username: str):
-    return User.objects.filter(username=username)
+    return User.objects.filter(username__icontains=username)
 
 
 def get_ticket_by_pk(pk: str):
@@ -91,7 +108,6 @@ def check_password_confirmation(form: forms):
         return False
 
 
-
 def save_ticket(request, form: forms):
     ticket = Ticket()
     ticket.title = form.cleaned_data["title"]
@@ -114,3 +130,29 @@ def save_review(request, form: forms):
     review.body = form.cleaned_data["body"]
     review.user = request.user
     review.save()
+
+
+def save_subscribtion(user: User, followed_user: User):
+    for user_follows in UserFollows.objects.all():
+        # Check if this user is not always followed
+        if (
+                user_follows.user == user
+                and
+                user_follows.followed_user == followed_user):
+            return
+    user_follow = UserFollows()
+    user_follow.user = user
+    user_follow.followed_user = followed_user
+    user_follow.save()
+
+
+def delete_subscribtion(user: User, followed_user: User):
+    # Get all users followed by user
+    users_follow = UserFollows.objects.all()
+    for user_follow in users_follow:
+        if (
+                user_follow.user == user
+                and
+                user_follow.followed_user == followed_user):
+            user_follow.delete()
+            break

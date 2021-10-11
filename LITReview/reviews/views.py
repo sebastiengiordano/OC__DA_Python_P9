@@ -1,18 +1,20 @@
 from itertools import chain
 
 from django.shortcuts import render, redirect
-from django.db.models import CharField, Value
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import UserFollows
 from .forms import (
     ConnectionForm,
     RegistrationForm,
-    CreateReview,
-    AskForReview)
+    CreateReviewForm,
+    AskForReviewForm,
+    SubscriptionForm)
 from .utils import (
+    get_user_by_id,
+    get_user_by_name,
+    get_users_by_name,
     get_users_subscribers,
     get_users_subscriptions,
     get_users_viewable_reviews,
@@ -21,7 +23,9 @@ from .utils import (
     check_password_confirmation,
     get_ticket_by_pk,
     save_ticket,
-    save_review
+    save_review,
+    save_subscribtion,
+    delete_subscribtion
 )
 
 
@@ -117,6 +121,7 @@ def feed(request):
     # Update context
     context = {}
     context['posts'] = posts
+
     # Check if there is message to display
     message_to_display = request.session.get('message_to_display')
     if message_to_display:
@@ -137,10 +142,11 @@ def create_review(request, ticket=None):
     if request.method == 'POST':
         # create a form instance and
         # populate it with data from the request:
-        form = CreateReview(request.POST)
+        form = CreateReviewForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             save_review(request, form)
+            # Ask to display a message
             request.session['message_to_display'] = 'save_new_review'
             return redirect('reviews:feed')
 
@@ -152,7 +158,7 @@ def create_review(request, ticket=None):
             ticket = get_ticket_by_pk(pk)[0]
             ticket.already_reviewed = True
         # create a form instance
-        form = CreateReview()
+        form = CreateReviewForm()
 
     # Update context
     context = {}
@@ -168,16 +174,17 @@ def ask_for_review(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = AskForReview(request.POST)
+        form = AskForReviewForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             save_ticket(request, form)
+            # Ask to display a message
             request.session['message_to_display'] = 'save_new_ticket'
             return redirect('reviews:feed')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = AskForReview()
+        form = AskForReviewForm()
 
     return render(request, 'reviews/ask_for_review.html', {'form': form})
 
@@ -211,13 +218,58 @@ def subscription(request):
     '''View which managed the subscription page.'''
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        followed_user_to_removed = request.POST['submit']
-        user_Follows_object = UserFollows.objects.filter(
-            id=followed_user_to_removed
-            )
-        if user_Follows_object is not None:
-            user_Follows_object.delete()
-            return subscription(request)
+
+        # Check if the request is a users research
+        if request.POST.get('users_search'):
+            users = get_users_by_name(request.POST.get('username', ''))
+            # Removed all users already followed
+            users_follows = get_users_subscriptions(request.user)
+            users_to_removed = []
+            for user_follows in users_follows:
+                for user in users:
+                    if user_follows == user:
+                        users_to_removed.append(user)
+                        break
+            for user in users_to_removed:
+                users = users.exclude(username=user)
+            if request.user in users:
+                users = users.exclude(username=request.user)
+            if get_user_by_name('admin')[0] in users:
+                users = users.exclude(username='admin')
+            # create a form instance and
+            # populate it with data from the request:
+            form = SubscriptionForm(request.POST)
+        # Or if its a subscribing request
+        elif request.POST.get('subscribing'):
+            user_follows = get_user_by_id(
+                request.POST.get('subscribing'))
+            save_subscribtion(
+                request.user,
+                user_follows[0])
+            # create a form instance
+            form = SubscriptionForm()
+            # Ask to display a message
+            request.session['message_to_display'] = \
+                f'Vous suivez à présent {user_follows[0].username}.'
+        # Or if its an unsubscribing request
+        elif request.POST.get('unsubscribing'):
+            user_follows = get_user_by_id(
+                request.POST.get('unsubscribing'))
+            delete_subscribtion(
+                request.user,
+                user_follows[0])
+            # create a form instance
+            form = SubscriptionForm()
+            # Ask to display a message
+            request.session['message_to_display'] = \
+                f'Vous ne suivez plus {user_follows[0].username}.'
+        else:
+            form = SubscriptionForm(request.POST)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        # create a form instance
+        form = SubscriptionForm()
 
     # returns queryset of subscribtions
     subscribtions = get_users_subscriptions(request.user)
@@ -225,13 +277,23 @@ def subscription(request):
     # returns queryset of subscribers
     subscribers = get_users_subscribers(request.user)
 
+    # Update context
+    context = {}
+    context['form'] = form
+    context['users_search'] = users if 'users' in locals() else None
+    context['subscribtions'] = subscribtions
+    context['subscribers'] = subscribers
+
+    # Check if there is message to display
+    message_to_display = request.session.get('message_to_display')
+    if message_to_display:
+        context['message_to_display'] = message_to_display
+        del request.session['message_to_display']
+
     return render(
         request,
         'reviews/subscription.html',
-        context={
-            'subscribtions': subscribtions,
-            'subscribers': subscribers
-            })
+        context=context)
 
 
 #################

@@ -260,10 +260,6 @@ nav a:hover {
     margin-bottom: 2%;
 }
 
-.snippet_image{
-    
-}
-
 .feed_create_review_wrap_button{
     margin: 10px;
     display: flex;
@@ -440,6 +436,26 @@ input#id_rating {
 }
 
 
+/***********************/
+/* Subscription Page */
+/***********************/
+
+.search_area {
+    display: inline-flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    left: 10%;
+    width: 80%;
+    height: 40px;
+}
+
+.wrap_button_right {
+    position: relative;
+    right: 0;
+}
+
+
 /***********/
 /* Content */
 /***********/
@@ -471,8 +487,21 @@ li::marker{
     font-size: small;
 }
 
-table, th, td {
-    border: 1px solid black;
+table {
+    background-color: bisque;
+    border: 1px solid chocolate;
+    padding: 10px 30px;
+    margin: 20px 2px;
+    font-size: 1em;
+    text-decoration: none;
+    text-indent: 10px;
+    width: 80%;
+    left: 10%;
+    position: relative;
+}
+
+td {
+    width: 80%;
 }
 
 .subscribe_information{
@@ -592,7 +621,7 @@ button a{
 
 .message{
     color: darkblue;
-    font-size: medium;
+    font-size: x-large;
     text-align: center;
     list-style-type: none;
     margin: 10px 0 0;
