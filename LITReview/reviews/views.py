@@ -19,6 +19,8 @@ from .utils import (
     get_users_subscriptions,
     get_users_viewable_reviews,
     get_users_viewable_tickets,
+    get_followed_users_viewable_reviews,
+    get_followed_users_viewable_tickets,
     username_exists,
     check_password_confirmation,
     get_ticket_by_pk,
@@ -100,9 +102,12 @@ def feed(request):
     '''View which manage the feed page.'''
     # Get queryset of reviews
     reviews = get_users_viewable_reviews(request.user)
+    followed_users_reviews = get_followed_users_viewable_reviews(request.user)
 
     # Get queryset of tickets
     tickets = get_users_viewable_tickets(request.user)
+    followers_tickets = get_followed_users_viewable_tickets(request.user)
+    tickets = list(chain(tickets, followers_tickets))
     # For each ticket, check if it has been reviewed by user
     for ticket in tickets:
         ticket.already_reviewed = False
@@ -113,7 +118,7 @@ def feed(request):
 
     # combine and sort the two types of posts
     posts = sorted(
-        chain(reviews, tickets),
+        chain(reviews, tickets, followed_users_reviews, followers_tickets),
         key=lambda post: post.time_created,
         reverse=True
     )

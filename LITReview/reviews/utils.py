@@ -36,7 +36,7 @@ def get_followed_users_viewable_reviews(user: User):
     return followers_reviews
 
 
-def get_followed_viewable_tickets(user: User):
+def get_followed_users_viewable_tickets(user: User):
     # Get tickets of followed users
     users_follow = UserFollows.objects.filter(user__username=user.username)
     followers_tickets = Ticket.objects.none()
