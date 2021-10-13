@@ -58,6 +58,14 @@ def get_users_subscriptions(user: User):
     return followed
 
 
+def get_all_reviews():
+    # Get all reviews
+    reviews = Review.objects.all()
+    reviews = reviews.annotate(
+        content_type=Value('REVIEW', CharField()))
+    return reviews
+
+
 def get_users_subscribers(user: User):
     # Get the list of all users which follow the user
     users_follow = UserFollows.objects.filter(followed_user=user)

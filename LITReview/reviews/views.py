@@ -16,6 +16,7 @@ from .utils import (
     get_user_by_name,
     get_users_by_name,
     get_users_subscribers,
+    get_all_reviews,
     get_users_subscriptions,
     get_users_viewable_reviews,
     get_users_viewable_tickets,
@@ -111,7 +112,7 @@ def feed(request):
     # For each ticket, check if it has been reviewed by user
     for ticket in tickets:
         ticket.already_reviewed = False
-        for review in reviews:
+        for review in get_all_reviews():
             if review.ticket == ticket:
                 ticket.already_reviewed = True
                 break
