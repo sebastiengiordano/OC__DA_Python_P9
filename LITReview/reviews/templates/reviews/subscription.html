@@ -63,7 +63,9 @@
                     <td>
                         <form action="{% url 'reviews:subscription' %}" method="post">
                             {% csrf_token %}
-                            <input type='submit' value="Se désabonner"  name='unsubscribing'>
+                            <div class="wrap_button_right">
+                                <input type='submit' value="Se désabonner"  name='unsubscribing'>
+                            </div>
                             <input type="hidden" name="unsubscribing" value={{subscribtion.id}}>
                         </form>
                     </td>

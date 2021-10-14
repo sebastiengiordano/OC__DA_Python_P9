@@ -11,9 +11,9 @@
 
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'reviews/ticket_snippet.html' with post=post %}
+                {% include 'reviews/ticket_snippet.html' with post=post update=update%}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'reviews/review_snippet.html' with post=post %}
+                {% include 'reviews/review_snippet.html' with post=post  update=update%}
             {% endif %}
         {% endfor %}
 

@@ -213,7 +213,12 @@ def posts(request):
         key=lambda post: post.time_created,
         reverse=True
     )
-    return render(request, 'reviews/posts.html', context={'posts': posts})
+    return render(
+        request,
+        'reviews/posts.html',
+        context={
+            'posts': posts,
+            'update': 'tickets_and_reviews'})
 
 
 #####################

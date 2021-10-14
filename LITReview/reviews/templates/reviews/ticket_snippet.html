@@ -31,17 +31,33 @@
         </div>
     {% endif %}
 
-    {% if not post.already_reviewed and not user.get_username == post.user.username %}
-        <div class="feed_create_review_wrap_button">
-            <form action="{% url 'reviews:create_review' %}" method="GET">
-                {% csrf_token %}
-                <div>
-                    <p>
-                        <input type="submit" value="Créer une critique">
-                    </p>
-                </div>
-                <input type="hidden" name="ticket_pk" value={{post.pk}} >
-            </form>
-        </div>
+    {% if update %}
+            <div class="wrap_button_in_line_right">
+                <form action="{% url 'reviews:posts' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="wrap_button_bottom_right">
+                        <input type="submit" value="Modifier">
+                        <input type="hidden" name="ticket_pk" value={{post.pk}}>
+                    </div>
+                    <div class="wrap_button_bottom_right">
+                        <input type="submit" value="Supprimer">
+                        <input type="hidden" name="delete">
+                    </div>
+                </form>
+            </div>
+    {% else %}
+        {% if not post.already_reviewed and not user.get_username == post.user.username %}
+            <div class="wrap_button_row_reverse">
+                <form action="{% url 'reviews:create_review' %}" method="GET">
+                    {% csrf_token %}
+                    <div>
+                        <p>
+                            <input type="submit" value="Créer une critique">
+                            <input type="hidden" name="ticket_pk" value={{post.pk}}>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
     {% endif %}
 </div>

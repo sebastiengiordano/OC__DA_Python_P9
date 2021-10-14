@@ -260,12 +260,6 @@ nav a:hover {
     margin-bottom: 2%;
 }
 
-.feed_create_review_wrap_button{
-    margin: 10px;
-    display: flex;
-    flex-flow: row-reverse;
-}
-
 
 /*********************************/
 /* Create or ask for review Page */
@@ -339,14 +333,6 @@ label[for='id_image_download'] {
 
 #id_image_download{
     display: none;
-}
-
-.review_wrap_button_bottom {
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    bottom: 0;
-    right: 5%;
 }
 
 
@@ -450,11 +436,6 @@ input#id_rating {
     height: 40px;
 }
 
-.wrap_button_right {
-    position: relative;
-    right: 0;
-}
-
 
 /***********/
 /* Content */
@@ -490,7 +471,7 @@ li::marker{
 table {
     background-color: bisque;
     border: 1px solid chocolate;
-    padding: 10px 30px;
+    padding: 10px 60px;
     margin: 20px 2px;
     font-size: 1em;
     text-decoration: none;
@@ -501,7 +482,7 @@ table {
 }
 
 td {
-    width: 80%;
+    width: 60%;
 }
 
 .subscribe_information{
@@ -594,6 +575,42 @@ button a{
 
 .wrap_button{
     margin: 10px;
+}
+
+.wrap_button_row{
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+}
+
+.wrap_button_row_reverse{
+    margin: 10px;
+    display: flex;
+    flex-flow: row-reverse;
+}
+
+.wrap_button_right {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    right: 0;
+}
+
+.wrap_button_in_line_right {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: relative;
+    right: 0;
+    width: 100%;
+}
+
+.wrap_button_bottom_right{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    right: 5%;
 }
 
 .in_line {
