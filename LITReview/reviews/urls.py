@@ -17,16 +17,10 @@ urlpatterns = [
     path('posts/', views.posts, name='posts'),
     path('subscription/', views.subscription, name='subscription'),
     path('disconnect/', views.disconnect, name='disconnect'),
-    # path('review_response', views.review_in_response_to_ticket, name='review_response'),
-    # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-    # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
-    # path('<int:question_id>/vote/', views.vote, name='vote'),
     re_path(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
 ]
-# Serving the media files in development mode
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + staticfiles_urlpatterns()
-# else:
+
+
 urlpatterns += staticfiles_urlpatterns()

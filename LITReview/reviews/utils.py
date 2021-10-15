@@ -49,7 +49,7 @@ def get_followed_users_viewable_tickets(user: User):
     return followers_tickets
 
 
-def get_users_subscriptions(user: User):
+def get_followed_users(user: User):
     # Get the list of all users followed by user
     users_follow = UserFollows.objects.filter(user=user)
     followed = []
@@ -58,15 +58,7 @@ def get_users_subscriptions(user: User):
     return followed
 
 
-def get_all_reviews():
-    # Get all reviews
-    reviews = Review.objects.all()
-    reviews = reviews.annotate(
-        content_type=Value('REVIEW', CharField()))
-    return reviews
-
-
-def get_users_subscribers(user: User):
+def get_users_subscriber(user: User):
     # Get the list of all users which follow the user
     users_follow = UserFollows.objects.filter(followed_user=user)
     followers = []
@@ -88,30 +80,25 @@ def get_users_by_name(username: str):
 
 
 def get_ticket_by_pk(pk: str):
-    return Ticket.objects.filter(pk=pk)
+    ticket = Ticket.objects.filter(pk=pk)
+    ticket = ticket.annotate(
+        content_type=Value('REVIEW', CharField()))
+    return ticket
 
 
-def username_exists(username):
-    if User.objects.filter(username=username).exists():
-        return True
+def get_review_by_pk(pk: str):
+    review = Review.objects.filter(pk=pk)
+    review = review.annotate(
+        content_type=Value('REVIEW', CharField()))
+    return review
 
-    return False
 
-
-def check_password_confirmation(form: forms):
-    if (
-            form.cleaned_data['password']
-            ==
-            form.cleaned_data['password_confirmation']):
-        return True
-    else:
-        # The password confirmation doesn't correspond to the
-        # password, we need to informed the user to its mistake.
-        form.add_error(
-            'password_confirmation',
-            'Vous n\'avez pas renseigné '
-            'deux fois le même mot de passe.')
-        return False
+def get_all_reviews():
+    # Get all reviews
+    reviews = Review.objects.all()
+    reviews = reviews.annotate(
+        content_type=Value('REVIEW', CharField()))
+    return reviews
 
 
 def save_ticket(request, form: forms):
@@ -126,8 +113,8 @@ def save_ticket(request, form: forms):
 
 def save_review(request, form: forms):
     review = Review()
-    if hasattr(form, 'ticket_pk'):
-        review.ticket = get_ticket_by_pk(form.ticket_pk)[0]
+    if 'ticket_pk' in request.POST:
+        review.ticket = get_ticket_by_pk(request.POST.get('ticket_pk'))[0]
         review.ticket.already_reviewed = True
     else:
         review.ticket = save_ticket(request, form)
@@ -154,11 +141,36 @@ def save_subscribtion(user: User, followed_user: User):
 
 def delete_subscribtion(user: User, followed_user: User):
     # Get all users followed by user
-    users_follow = UserFollows.objects.all()
-    for user_follow in users_follow:
-        if (
-                user_follow.user == user
-                and
-                user_follow.followed_user == followed_user):
-            user_follow.delete()
-            break
+    user_follow = UserFollows.objects.filter(user=user, followed_user=followed_user)
+    user_follow.delete()
+    # users_follow = UserFollows.objects.all()
+    # for user_follow in users_follow:
+    #     if (
+    #             user_follow.user == user
+    #             and
+    #             user_follow.followed_user == followed_user):
+    #         user_follow.delete()
+    #         break
+
+
+def username_exists(username):
+    if User.objects.filter(username=username).exists():
+        return True
+
+    return False
+
+
+def check_password_confirmation(form: forms):
+    if (
+            form.cleaned_data['password']
+            ==
+            form.cleaned_data['password_confirmation']):
+        return True
+    else:
+        # The password confirmation doesn't correspond to the
+        # password, we need to informed the user to its mistake.
+        form.add_error(
+            'password_confirmation',
+            'Vous n\'avez pas renseigné '
+            'deux fois le même mot de passe.')
+        return False

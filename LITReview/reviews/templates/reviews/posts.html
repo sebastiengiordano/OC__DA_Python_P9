@@ -27,8 +27,8 @@
 
 {% endblock %}
 
-{% if posts|length > 1 %}
-    {% block footer %}
+{% block footer %}
+    {% if posts|length > 1 %}
         <!-- Footer-->
         <div class="footer">
             <div class="footer-text">
@@ -36,6 +36,8 @@
                 Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
                 </p>
             </div>
-        </footer>
-    {% endblock %}
-{% endif %}
+        </div>
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}

@@ -39,8 +39,10 @@
                     <td>
                             <form action="{% url 'reviews:subscription' %}" method="post">
                             {% csrf_token %}
-                            <input type='submit' value="S'abonner"  name='subscribing'>
-                            <input type="hidden" name="subscribing" value={{user.id}}>
+                            <div class="wrap_button_right">
+                                <input type='submit' value="S'abonner"  name='subscribing'>
+                                <input type="hidden" name="subscribing" value={{user.id}}>
+                            </div>
                         </form>
                     </td>
                 </tr>
@@ -65,8 +67,8 @@
                             {% csrf_token %}
                             <div class="wrap_button_right">
                                 <input type='submit' value="Se désabonner"  name='unsubscribing'>
-                            </div>
                             <input type="hidden" name="unsubscribing" value={{subscribtion.id}}>
+                            </div>
                         </form>
                     </td>
                 </tr>

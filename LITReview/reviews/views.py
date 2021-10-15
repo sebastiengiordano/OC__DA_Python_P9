@@ -15,20 +15,21 @@ from .utils import (
     get_user_by_id,
     get_user_by_name,
     get_users_by_name,
-    get_users_subscribers,
-    get_all_reviews,
-    get_users_subscriptions,
+    get_users_subscriber,
+    get_followed_users,
     get_users_viewable_reviews,
     get_users_viewable_tickets,
     get_followed_users_viewable_reviews,
     get_followed_users_viewable_tickets,
-    username_exists,
-    check_password_confirmation,
     get_ticket_by_pk,
+    get_review_by_pk,
+    get_all_reviews,
     save_ticket,
     save_review,
     save_subscribtion,
-    delete_subscribtion
+    delete_subscribtion,
+    username_exists,
+    check_password_confirmation
 )
 
 
@@ -37,11 +38,11 @@ from .utils import (
 #############
 def get_connection_data(request):
     '''View used to manage user's log in.'''
-    # if this is a POST request we need to process the form data
+    # If this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # Create a form instance and populate it with data from the request:
         form = ConnectionForm(request.POST)
-        # check whether it's valid:
+        # Check whether it's valid:
         if form.is_valid():
             user = authenticate(
                     username=form.cleaned_data['username'],
@@ -50,8 +51,10 @@ def get_connection_data(request):
                 login(request, user)
                 # A backend authenticated the credentials
                 return redirect('reviews:feed')
+            else:
+                form.add_error('username', "Nom d'utilisateur ou mot de passe incorrect.")
 
-    # if a GET (or any other method) we'll create a blank form
+    # If a GET (or any other method) we'll create a blank form
     else:
         form = ConnectionForm()
 
@@ -63,11 +66,11 @@ def get_connection_data(request):
 #####################
 def get_registration_data(request):
     '''View used to append new user.'''
-    # if this is a POST request we need to process the form data
+    # If this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # Create a form instance and populate it with data from the request:
         form = RegistrationForm(request.POST)
-        # check whether it's valid:
+        # Check whether it's valid:
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -88,7 +91,7 @@ def get_registration_data(request):
                     f'Le nom d\'utilisateur "{username}" est déjà utilisé.')
                 check_password_confirmation(form)
 
-    # if a GET (or any other method) we'll create a blank form
+    # If a GET (or any other method) we'll create a blank form
     else:
         form = RegistrationForm()
 
@@ -109,15 +112,25 @@ def feed(request):
     tickets = get_users_viewable_tickets(request.user)
     followers_tickets = get_followed_users_viewable_tickets(request.user)
     tickets = list(chain(tickets, followers_tickets))
+
+    # Get all followed users
+    followed_users = get_followed_users(request.user)
     # For each ticket, check if it has been reviewed by user
     for ticket in tickets:
         ticket.already_reviewed = False
         for review in get_all_reviews():
             if review.ticket == ticket:
                 ticket.already_reviewed = True
+                # Check also if this ticket has
+                # been review by not followed user
+                if (
+                        not review.user in followed_users
+                        and
+                        not review.user == request.user):
+                    reviews = list(chain(reviews, get_review_by_pk(review.id)))
                 break
 
-    # combine and sort the two types of posts
+    # Combine and sort the two types of posts
     posts = sorted(
         chain(reviews, tickets, followed_users_reviews, followers_tickets),
         key=lambda post: post.time_created,
@@ -144,26 +157,41 @@ def feed(request):
 def create_review(request, ticket=None):
     '''View used to write a new review.'''
 
-    # if this is a POST request we need to process the form data
+    # If this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and
+        # Create a form instance and
         # populate it with data from the request:
         form = CreateReviewForm(request.POST)
-        # check whether it's valid:
+        # Check if this review if created from ticket's review
+        if 'ticket_pk' in request.POST:
+            pk = request.POST.get('ticket_pk')
+            ticket = get_ticket_by_pk(pk)[0]
+            # In order to removed "create review" button
+            # in case of invalid form
+            ticket.already_reviewed = True
+
+            updated_data = request.POST.copy()
+            updated_data.update({'title': ticket.title})
+            updated_data.update({'description': ticket.description})
+            updated_data.update({'image': ticket.image})
+            form = CreateReviewForm(updated_data)
+        # Check whether it's valid:
         if form.is_valid():
             save_review(request, form)
             # Ask to display a message
             request.session['message_to_display'] = 'save_new_review'
             return redirect('reviews:feed')
 
-    # if a GET (or any other method) we'll create a blank form
+    # If a GET (or any other method) we'll create a blank form
     else:
-        # check if this request come from a response to a ticket
+        # Check if this request come from a response to a ticket
         if 'ticket_pk' in request.GET:
             pk = request.GET.get('ticket_pk')
             ticket = get_ticket_by_pk(pk)[0]
+            # In order to removed "create review" button
+            # in case of invalid form
             ticket.already_reviewed = True
-        # create a form instance
+        # Create a form instance
         form = CreateReviewForm()
 
     # Update context
@@ -177,18 +205,18 @@ def create_review(request, ticket=None):
 @login_required(login_url='reviews:home_page')
 def ask_for_review(request):
     '''View used to ask for a review.'''
-    # if this is a POST request we need to process the form data
+    # If this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # Create a form instance and populate it with data from the request:
         form = AskForReviewForm(request.POST)
-        # check whether it's valid:
+        # Check whether it's valid:
         if form.is_valid():
             save_ticket(request, form)
             # Ask to display a message
             request.session['message_to_display'] = 'save_new_ticket'
             return redirect('reviews:feed')
 
-    # if a GET (or any other method) we'll create a blank form
+    # If a GET (or any other method) we'll create a blank form
     else:
         form = AskForReviewForm()
 
@@ -201,24 +229,44 @@ def ask_for_review(request):
 @login_required(login_url='reviews:home_page')
 def posts(request):
     '''View which manage the posts page.'''
-    # Get queryset of reviews
-    reviews = get_users_viewable_reviews(request.user)
+    # If this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # Check if the request is to update ticket
+        if request.POST.get('ticket_pk'):
+            ticket = get_ticket_by_pk(request.POST.get('review_pk'))
+        # Or if its to update review
+        elif request.POST.get('review_pk'):
+            review = get_review_by_pk(request.POST.get('review_pk'))
+        # Or if its for delete ticket or review 
+        elif request.POST.get('delete_ticket'):
+            pass
+        # Or if its for delete review 
+        elif request.POST.get('delete_review'):
+            pass
+        else:
+            return redirect('reviews:posts')
 
-    # Get queryset of tickets
-    tickets = get_users_viewable_tickets(request.user)
 
-    # combine and sort the two types of posts
-    posts = sorted(
-        chain(reviews, tickets),
-        key=lambda post: post.time_created,
-        reverse=True
-    )
-    return render(
-        request,
-        'reviews/posts.html',
-        context={
-            'posts': posts,
-            'update': 'tickets_and_reviews'})
+    # If a GET (or any other method) we'll create the posts page
+    else:
+        # Get queryset of reviews
+        reviews = get_users_viewable_reviews(request.user)
+
+        # Get queryset of tickets
+        tickets = get_users_viewable_tickets(request.user)
+
+        # Combine and sort the two types of posts
+        posts = sorted(
+            chain(reviews, tickets),
+            key=lambda post: post.time_created,
+            reverse=True
+        )
+        return render(
+            request,
+            'reviews/posts.html',
+            context={
+                'posts': posts,
+                'update': 'tickets_and_reviews'})
 
 
 #####################
@@ -227,14 +275,14 @@ def posts(request):
 @login_required(login_url='reviews:home_page')
 def subscription(request):
     '''View which managed the subscription page.'''
-    # if this is a POST request we need to process the form data
+    # If this is a POST request we need to process the form data
     if request.method == 'POST':
 
         # Check if the request is a users research
         if request.POST.get('users_search'):
             users = get_users_by_name(request.POST.get('username', ''))
             # Removed all users already followed
-            users_follows = get_users_subscriptions(request.user)
+            users_follows = get_followed_users(request.user)
             users_to_removed = []
             for user_follows in users_follows:
                 for user in users:
@@ -247,7 +295,7 @@ def subscription(request):
                 users = users.exclude(username=request.user)
             if get_user_by_name('admin')[0] in users:
                 users = users.exclude(username='admin')
-            # create a form instance and
+            # Create a form instance and
             # populate it with data from the request:
             form = SubscriptionForm(request.POST)
         # Or if its a subscribing request
@@ -257,7 +305,7 @@ def subscription(request):
             save_subscribtion(
                 request.user,
                 user_follows[0])
-            # create a form instance
+            # Create a form instance
             form = SubscriptionForm()
             # Ask to display a message
             request.session['message_to_display'] = \
@@ -269,7 +317,7 @@ def subscription(request):
             delete_subscribtion(
                 request.user,
                 user_follows[0])
-            # create a form instance
+            # Create a form instance
             form = SubscriptionForm()
             # Ask to display a message
             request.session['message_to_display'] = \
@@ -277,16 +325,16 @@ def subscription(request):
         else:
             form = SubscriptionForm(request.POST)
 
-    # if a GET (or any other method) we'll create a blank form
+    # If a GET (or any other method) we'll create a blank form
     else:
-        # create a form instance
+        # Create a form instance
         form = SubscriptionForm()
 
-    # returns queryset of subscribtions
-    subscribtions = get_users_subscriptions(request.user)
+    # Returns queryset of subscribtions
+    subscribtions = get_followed_users(request.user)
 
-    # returns queryset of subscribers
-    subscribers = get_users_subscribers(request.user)
+    # Returns queryset of subscribers
+    subscribers = get_users_subscriber(request.user)
 
     # Update context
     context = {}
@@ -314,23 +362,3 @@ def disconnect(request):
     '''Function used to log out the current user.'''
     logout(request)
     return redirect('reviews:home_page')
-
-
-# class FeedView(generic.ListView):
-#     model = [Review, Ticket]
-#     template_name = 'reviews/feed.html'
-#     context_object_name = 'latest_review_list'
-
-#     def get_queryset(self):
-#         """Return the last five published reviews."""
-#         return Review.objects.order_by('-pub_date')[:5]
-
-
-# class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/detail.html'
-
-
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/results.html'

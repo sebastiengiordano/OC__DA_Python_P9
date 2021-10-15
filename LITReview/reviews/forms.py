@@ -48,6 +48,7 @@ class CreateReviewForm(forms.Form):
         label="Description",
         min_length=10, max_length=2500,
         widget=forms.Textarea(),
+        required=False,
         error_messages={
             'required': 'Merci de renseigner '
             'la description de votre livre ou article.'}
