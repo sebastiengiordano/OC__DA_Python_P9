@@ -119,6 +119,12 @@ def save_review(request, form: forms):
     else:
         review.ticket = save_ticket(request, form)
     review.rating = form.cleaned_data["rating"]
+    rating = int(review.rating)
+    rating_empty_star = "12345"
+    rating_full_star = rating_empty_star[:rating]
+    rating_empty_star = rating_empty_star[rating:]
+    review.rating_full_star = rating_full_star
+    review.rating_empty_star = rating_empty_star
     review.headline = form.cleaned_data["headline"]
     review.body = form.cleaned_data["body"]
     review.user = request.user

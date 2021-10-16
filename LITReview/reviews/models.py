@@ -26,6 +26,8 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField(
         # Validates that rating must be between 0 and 5
         validators=[MinValueValidator(0), MaxValueValidator(5)])
+    rating_full_star = models.CharField(max_length=5)
+    rating_empty_star = models.CharField(max_length=5)
     headline = models.CharField(max_length=128)
     body = models.CharField(max_length=8192, blank=True)
     user = models.ForeignKey(

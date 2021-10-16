@@ -18,7 +18,17 @@
     </div>
 
     <div class="snippet_title">
-        {{post.headline}} -
+        {{post.headline}} - 
+
+        <div class="wrap_star">
+            {% for _ in post.rating_full_star %}
+                <input type="image" src="{% static 'reviews\img\full_star.png' %}" alt="Full Star" class="star"/>
+            {% endfor %}
+
+            {% for _ in post.rating_empty_star %}
+                <input type="image" src="{% static 'reviews\img\empty_star.png' %}" alt="Empty Star" class="star"/>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="snippet_description">
@@ -30,7 +40,7 @@
 
         <div class="snippet_header">
             <div class="snippet_user">
-                <label>Ticket - {{post.user.username}}</label>
+                <label>Ticket - {{post.ticket.user.username}}</label>
             </div>
         </div>
 
@@ -48,4 +58,20 @@
             </div>
         {% endif %}
     </div>
+
+    {% if update %}
+        <div class="wrap_button_in_line_right">
+            <form action="{% url 'reviews:posts' %}" method="POST">
+                {% csrf_token %}
+                <div class="wrap_button_inline_block">
+                    <input type="submit" value="Modifier">
+                    <input type="hidden" name="ticket_pk" value={{post.pk}}>
+                </div>
+                <div class="wrap_button_inline_block">
+                    <input type="submit" value="Supprimer">
+                    <input type="hidden" name="delete_review" value={{post.pk}}>
+                </div>
+            </form>
+        </div>
+    {% endif %}
 </div>

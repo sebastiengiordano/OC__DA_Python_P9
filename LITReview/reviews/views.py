@@ -52,7 +52,9 @@ def get_connection_data(request):
                 # A backend authenticated the credentials
                 return redirect('reviews:feed')
             else:
-                form.add_error('username', "Nom d'utilisateur ou mot de passe incorrect.")
+                form.add_error(
+                    'username',
+                    "Nom d'utilisateur ou mot de passe incorrect.")
 
     # If a GET (or any other method) we'll create a blank form
     else:
@@ -124,7 +126,7 @@ def feed(request):
                 # Check also if this ticket has
                 # been review by not followed user
                 if (
-                        not review.user in followed_users
+                        review.user not in followed_users
                         and
                         not review.user == request.user):
                     reviews = list(chain(reviews, get_review_by_pk(review.id)))
@@ -150,7 +152,10 @@ def feed(request):
             context['message'] = 'save_new_review'
 
         del request.session['message_to_display']
-    return render(request, 'reviews/feed.html', context=context)
+    return render(
+        request,
+        'reviews/feed.html',
+        context=context)
 
 
 @login_required(login_url='reviews:home_page')
@@ -237,15 +242,14 @@ def posts(request):
         # Or if its to update review
         elif request.POST.get('review_pk'):
             review = get_review_by_pk(request.POST.get('review_pk'))
-        # Or if its for delete ticket or review 
+        # Or if its for delete ticket or review
         elif request.POST.get('delete_ticket'):
             pass
-        # Or if its for delete review 
+        # Or if its for delete review
         elif request.POST.get('delete_review'):
             pass
         else:
             return redirect('reviews:posts')
-
 
     # If a GET (or any other method) we'll create the posts page
     else:
