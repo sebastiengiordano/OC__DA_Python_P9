@@ -9,7 +9,7 @@
     <div class="review_header_wrap">
         <div class="review_header">
             <p>
-                <label>Créer une critique</label>
+                <label>Modifier une critique</label>
             </p>
         </div>
     </div>
@@ -18,7 +18,7 @@
     {% comment %}
         Form display.
     {% endcomment %}
-    <form action="{% url 'reviews:create_review' %}" method="post">
+    <form action="{% url 'reviews:update_review' %}" method="post">
         {% csrf_token %}
         <div class="review_page">
             <div>

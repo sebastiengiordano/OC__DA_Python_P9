@@ -3,6 +3,17 @@
 
 
 {% block content %}
+    {% comment %}
+        This message appears if the user has
+        update or delete a ticket or a review.
+    {% endcomment %}
+    {% if message_to_display %}
+        <div class="message">
+            <p>
+                {{message_to_display}}
+            </p>
+        </div>
+    {% endif %}
 
     {% comment %}
         Display posts.
@@ -11,9 +22,9 @@
 
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
-                {% include 'reviews/ticket_snippet.html' with post=post update=update%}
+                {% include 'reviews/ticket_snippet.html' with post=post update=update %}
             {% elif post.content_type == 'REVIEW' %}
-                {% include 'reviews/review_snippet.html' with post=post  update=update%}
+                {% include 'reviews/review_snippet.html' with post=post  update=update %}
             {% endif %}
         {% endfor %}
 

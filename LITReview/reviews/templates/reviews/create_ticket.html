@@ -1,0 +1,58 @@
+{% extends 'reviews/base_with_navbar.html' %}
+
+
+{% block content %}
+
+    <div class="review_page">
+        <form action="{% url 'reviews:create_ticket' %}" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div>
+                <div class="review_header_wrap">
+                    <div class="review_header">
+                        <p>
+                            <label>Créer un ticket</label>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="review_page_form_title">
+                    {{ form.title.errors }}
+                    <label class="review_page_form_label" for="{{ form.title.id_for_label }}">Titre</label>
+                    {{ form.title }}
+                </div>
+                <div class="description">
+                    {{ form.description.errors }}
+                    <label class="review_page_form_label" for="{{ form.description.id_for_label }}">Description</label>
+                    {{ form.description }}
+                </div>
+                <div class="image_download_label">
+                    <label class="review_page_form_label" for="{{ form.image_download.id_for_label }}">Image</label>
+                </div>
+                <div class="image_download">
+                    {{ form.image_download.errors }}
+                    {{ form.image_download }}
+                    <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
+                </div>
+
+                <div class="wrap_button_bottom_right">
+                    <p>
+                        <input type="submit" value="Envoyer">
+                    </p>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    <!-- Footer-->
+    <div class="footer">
+        <div class="footer-text">
+            <p>
+            Copyright &copy; OpenClassRoom 2021 - DA Python Project 9
+            </p>
+        </div>
+    </footer>
+{% endblock %}

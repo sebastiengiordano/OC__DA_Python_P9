@@ -111,6 +111,20 @@ def save_ticket(request, form: forms):
     return ticket
 
 
+def save_updated_ticket(request, form: forms, ticket: Ticket):
+    ticket.title = form.cleaned_data["title"]
+    ticket.description = form.cleaned_data["description"]
+    image = request.FILES.get('image_download', None)
+    if image:
+        ticket.image = request.FILES.get('image_download', None)
+    ticket.save()
+    return ticket
+
+
+def delete_ticket(ticket: Ticket):
+    ticket.delete()
+
+
 def save_review(request, form: forms):
     review = Review()
     if 'ticket_pk' in request.POST:
@@ -129,6 +143,28 @@ def save_review(request, form: forms):
     review.body = form.cleaned_data["body"]
     review.user = request.user
     review.save()
+
+
+def save_updated_review(request, form: forms, review: Review):
+    if 'ticket_pk' in request.POST:
+        review.ticket = get_ticket_by_pk(request.POST.get('ticket_pk'))[0]
+        review.ticket.already_reviewed = True
+    else:
+        review.ticket = save_updated_ticket(request, form, review.ticket)
+    review.rating = form.cleaned_data["rating"]
+    rating = int(review.rating)
+    rating_empty_star = "12345"
+    rating_full_star = rating_empty_star[:rating]
+    rating_empty_star = rating_empty_star[rating:]
+    review.rating_full_star = rating_full_star
+    review.rating_empty_star = rating_empty_star
+    review.headline = form.cleaned_data["headline"]
+    review.body = form.cleaned_data["body"]
+    review.save()
+
+
+def delete_review(review: Review):
+    review.delete()
 
 
 def save_subscribtion(user: User, followed_user: User):

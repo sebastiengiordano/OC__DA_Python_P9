@@ -5,9 +5,7 @@ from django.db import models
 
 
 class Ticket(models.Model):
-    title = models.CharField(
-        max_length=128,
-        unique=True)
+    title = models.CharField(max_length=128)
     description = models.TextField(
         max_length=2048,
         blank=True)

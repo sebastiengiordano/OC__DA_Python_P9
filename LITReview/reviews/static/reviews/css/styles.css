@@ -401,12 +401,12 @@ input#id_rating {
 /* Ask for review Page */
 /***********************/
 
-#ask_for_review_page_format input[type=text], input[type=password] {
+#create_ticket_page_format input[type=text], input[type=password] {
     padding: 10px 70px;
     margin: 4px 2px;
 }
 
-.ask_for_review_wrap_button {
+.create_ticket_wrap_button {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -415,7 +415,7 @@ input#id_rating {
     height: 400px;
 }
 
-.ask_for_review_wrap_button_top {
+.create_ticket_wrap_button_top {
     position: relative;
     top: 0;
     left: 5%;

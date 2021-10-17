@@ -84,7 +84,7 @@ class CreateReviewForm(forms.Form):
         self.label_suffix = ""
 
 
-class AskForReviewForm(forms.Form):
+class CreateTicketForm(forms.Form):
     title = forms.CharField(
         label="Titre",
         max_length=100,

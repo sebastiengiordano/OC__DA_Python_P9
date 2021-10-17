@@ -4,13 +4,13 @@
 {% block content %}
 
     <div class="review_page">
-        <form action="{% url 'reviews:ask_for_review' %}" enctype="multipart/form-data" method="post">
+        <form action="{% url 'reviews:update_ticket' %}" enctype="multipart/form-data" method="post">
             {% csrf_token %}
             <div>
                 <div class="review_header_wrap">
                     <div class="review_header">
                         <p>
-                            <label>Créer un ticket</label>
+                            <label>Modifier un ticket</label>
                         </p>
                     </div>
                 </div>
@@ -30,9 +30,7 @@
                 </div>
                 <div class="image_download">
                     {{ form.image_download.errors }}
-                    {% if form.image_download %}
-                        {{ form.image_download }}
-                    {% endif %}
+                    {{ form.image_download }}
                     <label class="input_button" for="{{ form.image_download.id_for_label }}">Télécharger fichier</label>
                 </div>
 
