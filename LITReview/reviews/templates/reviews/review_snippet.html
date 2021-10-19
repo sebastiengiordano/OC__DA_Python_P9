@@ -65,11 +65,15 @@
                 {% csrf_token %}
                 <div class="wrap_button_inline_block">
                     <input type="submit" value="Modifier">
-                    <input type="hidden" name="ticket_pk" value={{post.pk}}>
+                    <input type="hidden" name="review_pk" value={{post.pk}}>
                 </div>
+            </form>
+            <form action="{% url 'reviews:posts' %}" method="POST">
+                {% csrf_token %}
                 <div class="wrap_button_inline_block">
                     <input type="submit" value="Supprimer">
                     <input type="hidden" name="delete_review" value={{post.pk}}>
+                    <input type="hidden" name="review_pk" value={{post.pk}}>
                 </div>
             </form>
         </div>

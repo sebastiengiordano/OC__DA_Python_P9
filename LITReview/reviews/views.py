@@ -258,18 +258,35 @@ def posts(request):
             delete_review(review)
             # Ask to display a message
             request.session['message_to_display'] = (
-                f'Votre critique "{headline}" a été supprimé.'
+                f'Votre critique "{headline}" a été supprimée.'
             )
         # Or if the request is to update ticket
         elif 'ticket_pk' in request.POST:
             ticket = get_ticket_by_pk(request.POST.get('ticket_pk'))[0]
+            # Create a form instance and
+            # populate it with data from the request:
+            updated_data = request.POST.copy()
+            updated_data.update({'title': ticket.headline})
+            updated_data.update({'description': ticket.body})
+            updated_data.update({'image': ticket.image})
+            form = CreateTicketForm(updated_data)
+
+            return render(request, 'reviews/update_ticket.html', {'form': form})
         # Or if its to update review
         elif 'review_pk' in request.POST:
             review = get_review_by_pk(request.POST.get('review_pk'))[0]
-            # Ask to display a message
-            request.session['message_to_display'] = (
-                f'Votre critique "{review.headline}" a été modifié.'
-            )
+            # Create a form instance and
+            # populate it with data from the request:
+            updated_data = request.POST.copy()
+            updated_data.update({'title': review.ticket.title})
+            updated_data.update({'description': review.ticket.description})
+            updated_data.update({'image_download': review.ticket.image_download})
+            updated_data.update({'headline': review.headline})
+            updated_data.update({'rating': review.image})
+            updated_data.update({'body': review.body})
+            form = CreateReviewForm(updated_data)
+
+            return render(request, 'reviews/update_review.html', {'form': form})
 
         return redirect('reviews:posts')
 
