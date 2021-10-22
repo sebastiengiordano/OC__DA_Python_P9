@@ -28,6 +28,11 @@
                 <div class="image_download_label">
                     <label class="review_page_form_label" for="{{ form.image_download.id_for_label }}">Image</label>
                 </div>
+                {% if display_image %}
+                    <div class="display_image">
+                        <img src={{display_image}}>
+                    </div>
+                {% endif %}
                 <div class="image_download">
                     {{ form.image_download.errors }}
                     {{ form.image_download }}
@@ -37,6 +42,7 @@
                 <div class="wrap_button_bottom_right">
                     <p>
                         <input type="submit" value="Envoyer">
+                        <input type="hidden" name="ticket_pk" value={{ticket_pk}}>
                     </p>
                 </div>
 

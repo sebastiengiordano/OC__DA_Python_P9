@@ -190,6 +190,11 @@ def create_review(request, ticket=None):
             # Ask to display a message
             request.session['message_to_display'] = 'save_new_review'
             return redirect('reviews:feed')
+        else:
+            return render(
+                request,
+                'reviews/create_review.html',
+                {'form': form})
 
     # If a GET (or any other method) we'll create a blank form
     else:
@@ -202,13 +207,14 @@ def create_review(request, ticket=None):
             ticket.already_reviewed = True
         # Create a form instance
         form = CreateReviewForm()
-
-    # Update context
-    context = {}
-    context['form'] = form
-    context['ticket'] = ticket
-
-    return render(request, 'reviews/create_review.html', context=context)
+        # Update context
+        context = {}
+        context['form'] = form
+        context['ticket'] = ticket
+        return render(
+            request,
+            'reviews/create_review.html',
+            context=context)
 
 
 @login_required(login_url='reviews:home_page')
@@ -241,7 +247,7 @@ def posts(request):
     # If this is a POST request we need to process the form data
     if request.method == 'POST':
         # Check if its for delete ticket
-        if 'delete_ticket' in request.POST:
+        if request.POST.get('delete_ticket', None):
             # Delete ticket
             ticket = get_ticket_by_pk(request.POST.get('ticket_pk'))[0]
             title = ticket.title
@@ -262,31 +268,52 @@ def posts(request):
             )
         # Or if the request is to update ticket
         elif 'ticket_pk' in request.POST:
-            ticket = get_ticket_by_pk(request.POST.get('ticket_pk'))[0]
+            pk = request.POST.get('ticket_pk')
+            ticket = get_ticket_by_pk(pk)[0]
             # Create a form instance and
             # populate it with data from the request:
             updated_data = request.POST.copy()
-            updated_data.update({'title': ticket.headline})
-            updated_data.update({'description': ticket.body})
-            updated_data.update({'image': ticket.image})
+            updated_data.update({'title': ticket.title})
+            updated_data.update({'description': ticket.description})
+            updated_data.update({'image_download': ticket.image})
             form = CreateTicketForm(updated_data)
+            # Update context
+            context = {}
+            context['form'] = form
+            context['ticket_pk'] = pk
+            if bool(ticket.image):
+                context['display_image'] = ticket.image.url
 
-            return render(request, 'reviews/update_ticket.html', {'form': form})
+            return render(
+                request,
+                'reviews/update_ticket.html',
+                context=context)
         # Or if its to update review
         elif 'review_pk' in request.POST:
-            review = get_review_by_pk(request.POST.get('review_pk'))[0]
+            pk = request.POST.get('review_pk')
+            review = get_review_by_pk(pk)[0]
             # Create a form instance and
             # populate it with data from the request:
             updated_data = request.POST.copy()
             updated_data.update({'title': review.ticket.title})
             updated_data.update({'description': review.ticket.description})
-            updated_data.update({'image_download': review.ticket.image_download})
+            updated_data.update({'image_download': review.ticket.image})
             updated_data.update({'headline': review.headline})
-            updated_data.update({'rating': review.image})
+            updated_data.update({'rating': review.rating})
             updated_data.update({'body': review.body})
             form = CreateReviewForm(updated_data)
+            # Update context
+            context = {}
+            context['form'] = form
+            context['review_pk'] = pk
+            # Check if the review.ticket shall be update or only dispayed
+            if not request.user == review.user:
+                context['display_ticket'] = True
 
-            return render(request, 'reviews/update_review.html', {'form': form})
+            return render(
+                request,
+                'reviews/update_review.html',
+                context=context)
 
         return redirect('reviews:posts')
 
@@ -346,10 +373,14 @@ def update_review(request, ticket=None):
             form = CreateReviewForm(updated_data)
         # Check whether it's valid:
         if form.is_valid():
-            save_updated_review(request, form)
+            pk = request.POST.get('review_pk')
+            review = get_review_by_pk(pk)[0]
+            save_updated_review(request, form, review)
             # Ask to display a message
-            request.session['message_to_display'] = 'save_new_review'
-            return redirect('reviews:feed')
+            request.session['message_to_display'] = (
+                f'Votre critique "{review.headline}" a été modifié.'
+            )
+            return redirect('reviews:posts')
 
     # If a GET (or any other method) we'll create a blank form
     else:
@@ -380,17 +411,17 @@ def update_ticket(request):
         form = CreateTicketForm(request.POST)
         # Check whether it's valid:
         if form.is_valid():
-            save_updated_ticket(request, form)
+            pk = request.POST.get('ticket_pk')
+            ticket = get_ticket_by_pk(pk)[0]
+            save_updated_ticket(request, form, ticket)
             # Ask to display a message
-            request.session['message_to_display'] = 'save_new_ticket'
+            request.session['message_to_display'] = (
+                f'Votre ticket "{ticket.title}" a été modifié.'
+            )
             return redirect('reviews:posts')
 
     # If a GET (or any other method) we'll create a blank form
     else:
-        updated_data = request.GET.copy()
-        updated_data.update({'title': ticket.title})
-        updated_data.update({'description': ticket.description})
-        updated_data.update({'image': ticket.image})
         form = CreateTicketForm(request.GET)
 
     return render(request, 'reviews/update_ticket.html', {'form': form})

@@ -46,7 +46,7 @@ class CreateReviewForm(forms.Form):
         )
     description = forms.CharField(
         label="Description",
-        min_length=10, max_length=2500,
+        max_length=2500,
         widget=forms.Textarea(),
         required=False,
         error_messages={

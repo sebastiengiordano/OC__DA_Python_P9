@@ -115,8 +115,8 @@ def save_updated_ticket(request, form: forms, ticket: Ticket):
     ticket.title = form.cleaned_data["title"]
     ticket.description = form.cleaned_data["description"]
     image = request.FILES.get('image_download', None)
-    if image:
-        ticket.image = request.FILES.get('image_download', None)
+    if image is not None:
+        ticket.image = image
     ticket.save()
     return ticket
 
@@ -183,7 +183,9 @@ def save_subscribtion(user: User, followed_user: User):
 
 def delete_subscribtion(user: User, followed_user: User):
     # Get all users followed by user
-    user_follow = UserFollows.objects.filter(user=user, followed_user=followed_user)
+    user_follow = UserFollows.objects.filter(
+        user=user,
+        followed_user=followed_user)
     user_follow.delete()
     # users_follow = UserFollows.objects.all()
     # for user_follow in users_follow:
