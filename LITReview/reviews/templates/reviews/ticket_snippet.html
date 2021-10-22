@@ -50,7 +50,7 @@
             </form>
         </div>
     {% else %}
-        {% if not post.already_reviewed and not user.get_username == post.user.username %}
+        {% if not post.already_reviewed %}
             <div class="wrap_button_row_reverse">
                 <form action="{% url 'reviews:create_review' %}" method="GET">
                     {% csrf_token %}
