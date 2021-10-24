@@ -75,9 +75,14 @@ cd "folder project path" & cd OC__DA_Python_P9
 ```sh
 .\env\Scripts\activate
 ```
-3. Run the program
+3. Run the server
 ```sh
-python -m LITReview
+cd "LITReview"
+python manage.py runserver
+```
+4. Use the following url
+```sh
+http://127.0.0.1:8000/reviews/
 ```
 
 <br>
