@@ -22,12 +22,11 @@
   * [Installation](#installation)
   * [Run the program](#run-the-program)
   * [Additional informations](#additional-informations)
-  * [Generate flak8 report](#generate-flak8-report)
-* [Folder structure](#folder-structure)
-  * [Folder controllers](#folder-controllers)
-  * [Folder models](#folder-models)
-  * [Folder tools](#folder-tools)
-  * [Folder views](#folder-views)
+  * [Requirements Specification](#requirements-dpecification)
+  * [A user could](#a-user-could)
+  * [A developer could](#a-developer-could)
+  * [The site will need to](#the-site-will-need-to)
+  * [The codebase will need to](#the-codebase-will-need-to)
 
 <br>
 <br>
@@ -111,40 +110,44 @@ http://127.0.0.1:8000/admin/
 <br>
 <br>
 
-<!-- FOLDER STRUCTURE -->
-## Folder structure
-
-From OC__DA_Python_P9\ChessTournaments folder, you will find the following folders:
-* controllers
-* models
-* tools
-* views
-* env
-
-<br>
-
-### Folder controllers
-In the folder controllers, you retreive all the controllers which aim to manage the application.
+<!-- Requirements Specification -->
+## A user could:
+*	Log in and sign up - the site should not be accessible to a non-logged-in user.
+*	View a feed containing the latest tickets and reviews from users that they follow ordered by time with the latest first.
+*	Create new tickets requesting a review on a book/article.
+*	Create reviews as a response to tickets.
+*	Create reviews not in response to a ticket.  As part of a one-step process, the user could create a ticket and then a review responding to their own ticket.
+*	View, edit, and delete their own tickets and reviews,
+*	Follow other users by entering their username,
+*	View who they follow and unfollow whoever they want. 
 
 <br>
 
-### Folder models
-In the folder models, you have the subfolder "database" where the players and tournaments are saved.
-There is also all objets link to tournamanent, player and menu which  aloow to manage them.
+### A developer could:
+*	Create a local environment using venv and run the site based on this detailed documentation.
 
 <br>
 
-### Folder tools
-In the folder tools, where is some boilerplate functions for this project.
+### The site will need to:
+*	Have a UI matching those of the wireframes.
+*	Have a clean and minimal UI.
+*	Use server-side rendering to display information from the database on the page dynamically. 
 
 <br>
 
-### Folder views
-In the folder views, you retreive the human machin interface.
-
-<br>
-
-### Folder env
-This folder aim to manage the virtual environment where run this application.
+### The codebase will need to:
+*	Use the Django framework.
+*	Use the Django template language for server-side rendering.
+*	Use SQLite as a local development DB (your db.sqlite3 file should be included in the repository).
+*	Have a database design that matches the database schema.  Have syntax that meets PEP8 guidelines. 
+A user could:
+*	Log in and sign up - the site should not be accessible to a non-logged-in user.
+*	View a feed containing the latest tickets and reviews from users that they follow ordered by time with the latest first.
+*	Create new tickets requesting a review on a book/article.
+*	Create reviews as a response to tickets.
+*	Create reviews not in response to a ticket.  As part of a one-step process, the user could create a ticket and then a review responding to their own ticket.
+*	View, edit, and delete their own tickets and reviews,
+*	Follow other users by entering their username,
+*	View who they follow and unfollow whoever they want. 
 
 <br>
