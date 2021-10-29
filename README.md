@@ -52,7 +52,7 @@ cd OC__DA_Python_P9
 ```
 4. Create a virtual environment:
 ```sh
-virtualenv env -p python3
+python -m venv env
 ```
 5. Activate the virtual environment :
 ```sh
@@ -61,6 +61,14 @@ virtualenv env -p python3
 6. From the "requirements.txt" file, install needed packets:
 ```sh
 python -m pip install -r requirements.txt
+```
+7. Go to folder LITReview:
+```sh
+cd LITReview
+```
+8. Make database migrations with:
+```sh
+python manage.py migrate
 ```
 
 <br>
@@ -77,7 +85,7 @@ cd "folder project path" & cd OC__DA_Python_P9
 ```
 3. Run the server
 ```sh
-cd "LITReview"
+cd LITReview
 python manage.py runserver
 ```
 4. Use the following url
