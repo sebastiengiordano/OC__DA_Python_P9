@@ -451,7 +451,7 @@ def subscription(request):
                 users = users.exclude(username=user)
             if request.user in users:
                 users = users.exclude(username=request.user)
-            if get_user_by_name('admin')[0] in users:
+            if get_user_by_name('Admin')[0] in users:
                 users = users.exclude(username='admin')
             # Create a form instance and
             # populate it with data from the request:
